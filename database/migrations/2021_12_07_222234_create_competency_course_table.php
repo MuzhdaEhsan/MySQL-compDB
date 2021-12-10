@@ -14,11 +14,14 @@ class CreateCompetencyCourseTable extends Migration
     public function up()
     {
         Schema::create('competency_course', function (Blueprint $table) {
-            $table->unsignedBigInteger('competency_id');
-            $table->unsignedBigInteger('course_id');
-
-            $table->foreign('competency_id')->references('id')->on('competencies');
-            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreignId('competency_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('course_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->primary(['competency_id', 'course_id']);
         });

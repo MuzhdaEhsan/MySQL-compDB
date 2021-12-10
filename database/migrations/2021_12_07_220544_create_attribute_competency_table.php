@@ -14,11 +14,14 @@ class CreateAttributeCompetencyTable extends Migration
     public function up()
     {
         Schema::create('attribute_competency', function (Blueprint $table) {
-            $table->unsignedBigInteger('attribute_id');
-            $table->unsignedBigInteger('competency_id');
-
-            $table->foreign('attribute_id')->references('id')->on('attributes');
-            $table->foreign('competency_id')->references('id')->on('competencies');
+            $table->foreignId('attribute_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('competency_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->primary(['attribute_id', 'competency_id']);
         });
