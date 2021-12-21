@@ -36,8 +36,11 @@
                                     <h3 class="text-center font-weight-light my-4">Login</h3>
                                 </div>
                                 <div class="card-body">
+                                    {{-- Form --}}
                                     <form method="POST" action="{{ route('login') }}">
                                         @csrf
+
+                                        {{-- Email --}}
                                         <div class="row mb-3">
                                             <label for="email"
                                                 class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
@@ -56,6 +59,7 @@
                                             </div>
                                         </div>
 
+                                        {{-- Password --}}
                                         <div class="row mb-3">
                                             <label for="password"
                                                 class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
@@ -73,11 +77,18 @@
                                             </div>
                                         </div>
 
+                                        {{-- Login Button --}}
                                         <div class="row mb-3">
-                                            <div class="col-md-6 offset-md-4 d-flex justify-content-between">
+                                            <div class="col-md-6 offset-md-4">
                                                 <button type="submit" class="btn btn-primary">
                                                     {{ __('Login') }}
                                                 </button>
+                                            </div>
+                                        </div>
+
+                                        {{-- Remember Me Button --}}
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 offset-md-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="remember"
                                                         id="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -95,11 +106,13 @@
                 </div>
             </main>
         </div>
+
+        {{-- Footer --}}
         <div id="layoutAuthentication_footer">
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
-                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                        <div class="text-muted footer-text"></div>
                     </div>
                 </div>
             </footer>

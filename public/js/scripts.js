@@ -24,4 +24,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
             );
         });
     }
+
+    document.querySelector(
+        ".footer-text"
+    ).innerHTML = `Durham College &copy; ${new Date().getFullYear()}`;
 });
