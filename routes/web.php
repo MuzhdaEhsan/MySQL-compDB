@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,12 +16,8 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Auth::routes();
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes(['register' => false]);
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/', [HomeController::class, 'index']);
 });
