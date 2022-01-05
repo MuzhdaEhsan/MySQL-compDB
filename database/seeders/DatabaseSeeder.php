@@ -14,10 +14,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Fake admin user
         User::factory(1)->create([
-            'name' => 'Admin',
+            'name' => 'John Doe',
             'email' => 'admin@competency.ca',
-            'is_admin' => 1,
+            'is_admin' => true,
+            'password' => bcrypt('password')
+        ]);
+
+        // Fake normal user
+        User::factory(1)->create([
+            'name' => 'Jane Doe',
+            'email' => 'staff@competency.ca',
+            'is_admin' => false,
             'password' => bcrypt('password')
         ]);
     }
