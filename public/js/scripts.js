@@ -25,7 +25,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
         });
     }
 
-    document.querySelector(
-        ".footer-text"
-    ).innerHTML = `Durham College &copy; ${new Date().getFullYear()}`;
+    // Insert the footer year dynamically
+    const paragraph = document.createElement("p");
+    paragraph.innerHTML = `Durham College &copy; ${new Date().getFullYear()}`;
+    paragraph.classList.add(
+        window.location.pathname.startsWith("/login")
+            ? "text-white"
+            : "text-black",
+        "my-0"
+    );
+    document.querySelector(".footer-text").appendChild(paragraph);
 });

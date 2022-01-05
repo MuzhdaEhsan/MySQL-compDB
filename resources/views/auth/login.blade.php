@@ -24,11 +24,13 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 
-<body class="bg-primary">
+<body>
     <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
             <main>
                 <div class="container">
+                    <h1 class="display-1 text-center text-success my-5">Competency Database</h1>
+
                     <div class="row justify-content-center">
                         <div class="col-lg-5">
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
@@ -80,7 +82,7 @@
                                         {{-- Login Button --}}
                                         <div class="row mb-3">
                                             <div class="col-md-6 offset-md-4">
-                                                <button type="submit" class="btn btn-primary">
+                                                <button type="submit" class="btn btn-success">
                                                     {{ __('Login') }}
                                                 </button>
                                             </div>
@@ -109,7 +111,7 @@
 
         {{-- Footer --}}
         <div id="layoutAuthentication_footer">
-            <footer class="py-4 bg-light mt-auto">
+            <footer class="py-4 bg-success mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted footer-text"></div>
