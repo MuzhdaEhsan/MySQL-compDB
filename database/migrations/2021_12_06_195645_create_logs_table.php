@@ -22,7 +22,8 @@ class CreateLogsTable extends Migration
             $table->string('action');
             $table->string('table_name');
             $table->unsignedBigInteger('record_id');
-            $table->jsonb('log');
+            $table->text('new_state');
+            $table->text('old_state');
             $table->timestamps();
             $table->softDeletes();
         });
