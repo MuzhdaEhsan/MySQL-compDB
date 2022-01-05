@@ -62,46 +62,49 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Main</div>
-                        <a class="nav-link" href="/">
+                        <div class="sb-sidenav-menu-heading">Dashboard</div>
+                        <a class="nav-link {{ str_starts_with(request()->path(), '/') ? 'active' : '' }}" href="/">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
 
                         <div class="sb-sidenav-menu-heading">Resources</div>
-                        <a class="nav-link" href="/competencies">
+                        <a class="nav-link {{ str_starts_with(request()->path(), 'competencies') ? 'active' : '' }}"
+                            href="/competencies">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Competencies
                         </a>
-                        <a class="nav-link" href="/attributes">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        <a class="nav-link {{ str_starts_with(request()->path(), 'attributes') ? 'active' : '' }}"
+                            href="/attributes">
+                            <div class="sb-nav-link-icon"><i class="fas fa-atom"></i></div>
                             Attributes
                         </a>
-                        <a class="nav-link" href="/skills">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        <a class="nav-link {{ str_starts_with(request()->path(), 'skills') ? 'active' : '' }}"
+                            href="/skills">
+                            <div class="sb-nav-link-icon"><i class="fas fa-laptop-code"></i></div>
                             Skills
                         </a>
-                        <a class="nav-link" href="/knowledge">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        <a class="nav-link {{ str_starts_with(request()->path(), 'knowledge') ? 'active' : '' }}"
+                            href="/knowledge">
+                            <div class="sb-nav-link-icon"><i class="fas fa-school"></i></div>
                             Knowledge
                         </a>
-
-                        <div class="sb-sidenav-menu-heading">Courses</div>
-                        <a class="nav-link" href="/courses">
+                        <a class="nav-link {{ str_starts_with(request()->path(), 'courses') ? 'active' : '' }}"
+                            href="/courses">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Courses
                         </a>
 
                         {{-- Users and Logs links are available to admins only --}}
                         @if (auth()->user()->isAdmin())
-                            <div class="sb-sidenav-menu-heading">Users</div>
-                            <a class="nav-link" href="/users">
+                            <div class="sb-sidenav-menu-heading">Admin Resources</div>
+                            <a class="nav-link {{ str_starts_with(request()->path(), 'users') ? 'active' : '' }}"
+                                href="/users">
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Users
                             </a>
-
-                            <div class="sb-sidenav-menu-heading">Logs</div>
-                            <a class="nav-link" href="/logs">
+                            <a class="nav-link {{ str_starts_with(request()->path(), 'logs') ? 'active' : '' }}"
+                                href="/logs">
                                 <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
                                 Logs
                             </a>
