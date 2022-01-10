@@ -14,7 +14,10 @@ class AttributeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'short_name' => $this->faker->sentence(3, false),
+            'statement' => $this->faker->sentence(10),
+            'created_at' => now(),
+            'updated_at' => now()
         ];
     }
 }

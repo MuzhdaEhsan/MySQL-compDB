@@ -14,7 +14,9 @@ class CourseFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'full_name' => $this->faker->sentence(5),
+            'created_at' => now(),
+            'updated_at' => now()
         ];
     }
 }
