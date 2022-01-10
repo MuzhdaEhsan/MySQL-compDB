@@ -12,9 +12,15 @@ class CompetencyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $resultsPerPage = $request->query('resultsPerPage') ?? 10;
+        $orderBy = $request->query('orderBy') ?? 'id';
+        $orderByType = $request->query('orderByType') ?? 'asc';
+
+        $competencies = Competency::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
+
+        return view('competencies.index', compact('competencies'));
     }
 
     /**
@@ -46,7 +52,7 @@ class CompetencyController extends Controller
      */
     public function show(Competency $competency)
     {
-        //
+        return view('competencies.show', compact('competency'));
     }
 
     /**
