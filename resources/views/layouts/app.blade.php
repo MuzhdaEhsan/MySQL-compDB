@@ -22,6 +22,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('scripts')
 </head>
 
 <body>
@@ -36,7 +37,11 @@
         <ul class="navbar-nav ms-auto me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    aria-expanded="false"><i class="fas fa-user fa-fw"></i>
+                    {{ auth()->user()->isAdmin()
+                        ? 'Admin'
+                        : 'Staff' }}
+                    - {{ auth()->user()->name }}</a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="/settings">Settings</a></li>
                     <li>
@@ -111,22 +116,13 @@
                         @endif
                     </div>
                 </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:
-                        @if (auth()->user()->isAdmin())
-                            Admin
-                        @else
-                            Staff
-                        @endif
-                    </div>
-                    {{ auth()->user()->name }}
-                </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             {{-- Main area --}}
             <main>
                 <div class="container-fluid px-4">
+                    @include('layouts.flash-status')
                     @yield('content')
                 </div>
             </main>
