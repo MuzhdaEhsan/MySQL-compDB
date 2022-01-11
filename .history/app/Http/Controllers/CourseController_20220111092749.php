@@ -18,9 +18,9 @@ class CourseController extends Controller
         $orderBy = $request->query('orderBy') ?? 'id';
         $orderByType = $request->query('orderByType') ?? 'asc';
 
-        $courses = Course::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
+        $knowledge = Knowledge::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
 
-        return view('courses.index', compact('courses'));
+        return view('knowledge.index', compact('knowledge'));
     }
 
     /**
@@ -52,7 +52,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return view('courses.show', compact('course'));
+        //
     }
 
     /**

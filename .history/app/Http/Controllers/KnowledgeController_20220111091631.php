@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
+use App\Models\Knowledge;
 use Illuminate\Http\Request;
 
-class CourseController extends Controller
+class KnowledgeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +18,9 @@ class CourseController extends Controller
         $orderBy = $request->query('orderBy') ?? 'id';
         $orderByType = $request->query('orderByType') ?? 'asc';
 
-        $courses = Course::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
+        $knowledge = Knowledge::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
 
-        return view('courses.index', compact('courses'));
+        return view('knowledge.index', compact('knowledge'));
     }
 
     /**
@@ -47,21 +47,21 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Course  $course
+     * @param  \App\Models\Knowledge  $knowledge
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show(Knowledge $knowledge)
     {
-        return view('courses.show', compact('course'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Course  $course
+     * @param  \App\Models\Knowledge  $knowledge
      * @return \Illuminate\Http\Response
      */
-    public function edit(Course $course)
+    public function edit(Knowledge $knowledge)
     {
         //
     }
@@ -70,10 +70,10 @@ class CourseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Course  $course
+     * @param  \App\Models\Knowledge  $knowledge
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, Knowledge $knowledge)
     {
         //
     }
@@ -81,10 +81,10 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Course  $course
+     * @param  \App\Models\Knowledge  $knowledge
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Course $course)
+    public function destroy(Knowledge $knowledge)
     {
         //
     }

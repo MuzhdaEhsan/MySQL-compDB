@@ -12,15 +12,9 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $resultsPerPage = $request->query('resultsPerPage') ?? 10;
-        $orderBy = $request->query('orderBy') ?? 'id';
-        $orderByType = $request->query('orderByType') ?? 'asc';
-
-        $courses = Course::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
-
-        return view('courses.index', compact('courses'));
+        //
     }
 
     /**
@@ -52,7 +46,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return view('courses.show', compact('course'));
+        //
     }
 
     /**
