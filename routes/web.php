@@ -29,17 +29,28 @@ Auth::routes(['register' => false]);
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index']);
 
+    Route::middleware(['admin'])->group(function () {
+        Route::resource('users', UserController::class);
+        Route::resource('logs', LogController::class);
+
+        // Those routes must come first before the resources, otherwise if user goes to /competencies/trashed
+        // the app will break as it tries to find a competency with ID "trashed" instead
+        Route::prefix('competencies')->group(function () {
+            Route::get('trashed', [CompetencyController::class, 'trashed']);
+            Route::delete('{id}/force-delete', [CompetencyController::class, 'forceDelete']);
+            Route::post('{id}/restore', [CompetencyController::class, 'restore']);
+        });
+
+        // TODO: force delete and restore routes for other resources
+    });
+
+    // TODO: Modify index pages of other resources to match competency index page
     // Resource controllers https://laravel.com/docs/8.x/controllers#resource-controllers 
     Route::resource('competencies', CompetencyController::class);
     Route::resource('attributes', AttributeController::class);
     Route::resource('skills', SkillController::class);
     Route::resource('knowledge', KnowledgeController::class);
     Route::resource('courses', CourseController::class);
-
-    Route::middleware(['admin'])->group(function () {
-        Route::resource('users', UserController::class);
-        Route::resource('logs', LogController::class);
-    });
 
     // Use this custom prefix route instead of placing them in api.php is because
     // we are using session-based authentication while api.php is for stateless requests

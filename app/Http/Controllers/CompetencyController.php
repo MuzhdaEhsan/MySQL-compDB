@@ -86,6 +86,60 @@ class CompetencyController extends Controller
      */
     public function destroy(Competency $competency)
     {
-        //
+        // Get the code and short name of this record before deleting
+        $code = $competency->code;
+        $shortName = $competency->short_name;
+
+        $competency->delete();
+
+        // Redirect to index page with flash message
+        return redirect()
+            ->action(
+                [CompetencyController::class, 'index']
+            )->with(
+                'status',
+                "Successfully deleted Competency $code - $shortName"
+            );
+    }
+
+    /**
+     * Return trashed competencies.
+     */
+    public function trashed()
+    {
+        $competencies = Competency::onlyTrashed()->get();
+        return view('competencies.trashed', compact('competencies'));
+    }
+
+    /**
+     * Force delete a competency.
+     */
+    public function forceDelete($id)
+    {
+        $competency = Competency::onlyTrashed()->where('id', $id)->firstOrFail();
+        $code = $competency->code;
+        $shortName = $competency->short_name;
+
+        $competency->forceDelete();
+
+        return back()->with(
+            'status',
+            "Successfully force deleted Competency $code - $shortName"
+        );
+    }
+
+    /**
+     * Restore a competency.
+     */
+    public function restore($id)
+    {
+        $competency = Competency::onlyTrashed()->where('id', $id)->firstOrFail();
+
+        $competency->restore();
+
+        return back()->with(
+            'status',
+            "Successfully restored Competency $competency->code - $competency->short_name"
+        );
     }
 }
