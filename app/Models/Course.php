@@ -15,7 +15,10 @@ class Course extends Model
      *
      * @var array
      */
-    protected $hidden = ['pivot'];
+    protected $hidden = [
+        'pivot',
+        'courses_index_col'
+    ];
 
     /**
      * Parent competencies.

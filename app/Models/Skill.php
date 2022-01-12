@@ -15,7 +15,10 @@ class Skill extends Model
      *
      * @var array
      */
-    protected $hidden = ['pivot'];
+    protected $hidden = [
+        'pivot',
+        'skills_index_col'
+    ];
 
     /**
      * Parent competencies.

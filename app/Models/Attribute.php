@@ -15,7 +15,10 @@ class Attribute extends Model
      *
      * @var array
      */
-    protected $hidden = ['pivot'];
+    protected $hidden = [
+        'pivot',
+        'attributes_index_col'
+    ];
 
     /**
      * Parent competencies.

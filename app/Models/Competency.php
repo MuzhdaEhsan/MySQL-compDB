@@ -15,7 +15,10 @@ class Competency extends Model
      *
      * @var array
      */
-    protected $hidden = ['pivot'];
+    protected $hidden = [
+        'pivot',
+        'competencies_index_col'
+    ];
 
     /**
      * Get related attributes. Cannot use 'attributes' because there is a default property called $attributes already.

@@ -15,7 +15,10 @@ class Knowledge extends Model
      *
      * @var array
      */
-    protected $hidden = ['pivot'];
+    protected $hidden = [
+        'pivot',
+        'knowledge_index_col'
+    ];
 
     /**
      * Parent competencies.
