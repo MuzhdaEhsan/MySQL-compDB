@@ -18,6 +18,8 @@ Run these commands for the first time **or** when pull latest changes that has n
 
 ```bash
 php artisan migrate:fresh && php artisan db:seed
+
+composer install
 ```
 
 Run these commands to run the app
