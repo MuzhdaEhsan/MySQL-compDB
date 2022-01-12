@@ -36,35 +36,44 @@ class SearchController extends Controller
         }
 
         $table = "";
-        $col = "";
+        $column = "";
+        $fields = 'id, code, short_name, statement';
 
         switch ($request->input('type')) {
             case 'competencies':
             case null:
                 $table = "competencies";
-                $col = "competencies_index_col";
+                $column = "competencies_index_col";
                 break;
             case 'skills':
                 $table = "skills";
-                $col = "skills_index_col";
+                $column = "skills_index_col";
                 break;
             case 'attributes':
                 $table = "attributes";
-                $col = "attributes_index_col";
+                $column = "attributes_index_col";
                 break;
             case 'knowledge':
                 $table = "knowledge";
-                $col = "knowledge_index_col";
+                $column = "knowledge_index_col";
                 break;
             case 'courses':
                 $table = "courses";
-                $col = "courses_index_col";
+                $column = "courses_index_col";
+                //  Change the fields if type is courses
+                $fields = 'id, code, full_name';
                 break;
             default:
                 break;
         }
 
-        $results = DB::select("SELECT * FROM {$table} WHERE {$col} @@ to_tsquery('simple', ?);", [$toTsquery]);
+        // Check if the request contain result limit
+        $limit = $request->input('limit') ?? null;
+
+        $results = DB::select(
+            "SELECT {$fields} FROM {$table} WHERE {$column} @@ to_tsquery('simple', ?)" . ($limit ? " LIMIT=$limit;" : ";"),
+            [$toTsquery]
+        );
 
         // Add highlighted text to each result
         foreach ($results as $result) {
@@ -78,7 +87,7 @@ class SearchController extends Controller
                 $result->highlight = DB::select(
                     "SELECT ts_headline('simple', ?, to_tsquery('simple', ?),
                     'HighlightAll=true, StartSel=<mark>, StopSel=</mark>')",
-                    ["{$result->code} - {$result->short_name} <br> {$result->statement}", $toTsquery]
+                    ["{$result->code} - {$result->short_name} <br /> {$result->statement}", $toTsquery]
                 )[0]->ts_headline;
             }
         }

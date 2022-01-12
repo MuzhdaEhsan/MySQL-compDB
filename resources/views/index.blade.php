@@ -38,18 +38,20 @@
                 const resultContainerElement = document.querySelector('#result-container');
 
                 if (keyword.length > 0) {
-                    const postgresData = await axios.get("/stateful-api/search", {
+                    const {
+                        data
+                    } = await axios.get("/stateful-api/search", {
                         params: {
                             type,
                             keyword
                         },
                     });
 
-                    if (postgresData.data.data.length > 0) {
+                    if (data?.data?.length > 0) {
                         let listGroupDiv = document.createElement('div');
                         listGroupDiv.classList.add('list-group');
 
-                        postgresData.data.data.forEach(item => {
+                        data?.data.forEach(item => {
                             listGroupDiv.innerHTML +=
                                 `<a href="/${type}/${item.id}" class="list-group-item list-group-item-action">${item.highlight}</a>`
                         });
