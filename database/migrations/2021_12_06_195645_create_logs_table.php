@@ -25,7 +25,6 @@ class CreateLogsTable extends Migration
             $table->text('new_state');
             $table->text('old_state');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
