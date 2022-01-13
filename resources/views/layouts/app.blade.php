@@ -125,6 +125,7 @@
             <main>
                 <div class="container-fluid px-4">
                     @include('layouts.flash-status')
+                    @include('layouts.form-errors')
                     @yield('content')
                 </div>
             </main>
