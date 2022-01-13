@@ -21,7 +21,7 @@ npm install
 Run these commands for the first time **or** when pull latest changes that has new migrations/packages
 
 ```bash
-php artisan migrate:fresh && php artisan db:seed
+php artisan migrate:fresh --seed
 
 composer install
 
