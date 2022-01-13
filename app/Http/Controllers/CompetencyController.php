@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Competency;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class CompetencyController extends Controller
@@ -62,7 +63,15 @@ class CompetencyController extends Controller
             'statement' => $request->input('statement')
         ]);
 
-        // Add related skills 
+        // Log this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::CREATE,
+            'table_name' => Log::TABLE_COMPETENCIES,
+            'record_id' => $competency->id,
+        ]);
+
+        // Add related skills using ATTACH (add new items)
         $competency->skills()->attach($request->input('skills') ?? []);
 
         if ($request->expectsJson()) {
@@ -97,7 +106,7 @@ class CompetencyController extends Controller
      */
     public function edit(Competency $competency)
     {
-        //
+        return view('competencies.edit', compact('competency'));
     }
 
     /**
@@ -109,7 +118,44 @@ class CompetencyController extends Controller
      */
     public function update(Request $request, Competency $competency)
     {
-        //
+        $request->validate([
+            'type' => ['string', 'required'],
+            'short_name' => ['string', 'required'],
+        ]);
+
+        $originalCompetency = $competency->toJson();
+
+        // Create a new competency record
+        $competency->update([
+            'code' => $request->type . substr($competency->code, 1),
+            'short_name' => $request->input('short_name'),
+            'statement' => $request->input('statement')
+        ]);
+
+        // Log this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::UPDATE,
+            'table_name' => Log::TABLE_COMPETENCIES,
+            'record_id' => $competency->id,
+            'old_state' => $originalCompetency,
+            'new_state' => $competency->toJson()
+        ]);
+
+        // Add related skills using SYNC (synchronize the list)
+        $competency->skills()->sync($request->input('skills') ?? []);
+
+        if ($request->expectsJson()) {
+            return response()->json(['competency' => $competency]);
+        }
+
+        return redirect()
+            ->action(
+                [CompetencyController::class, 'index']
+            )->with(
+                'status',
+                "Successfully updated Competency $competency->code - $competency->short_name"
+            );
     }
 
     /**
