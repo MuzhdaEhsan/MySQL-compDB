@@ -71,7 +71,7 @@ class SearchController extends Controller
         $limit = $request->input('limit') ?? null;
 
         $results = DB::select(
-            "SELECT {$fields} FROM {$table} WHERE {$column} @@ to_tsquery('simple', ?)" . ($limit ? " LIMIT=$limit;" : ";"),
+            "SELECT {$fields} FROM {$table} WHERE {$column} @@ to_tsquery('simple', ?)" . ($limit ? " LIMIT $limit;" : ";"),
             [$toTsquery]
         );
 
