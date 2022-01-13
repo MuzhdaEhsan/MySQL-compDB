@@ -28,12 +28,20 @@ composer install
 npm install
 ```
 
-Run these commands to run the app
+Run these commands to run the app (open two separate terminals)
 
 ```bash
-npm install && npm run watch
+npm run watch
 
 php artisan serve
+```
+
+Run these commands when deploying the app
+
+Cache using php artisan \*:cache for better performance
+
+```bash
+npm run production
 ```
 
 Sometimes there are changes that Laravel doesn't pickup automatically, cancel `php artisan serve` and run `php artisan cache:clear` and rerun the app again
