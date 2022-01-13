@@ -22,8 +22,8 @@ class CreateLogsTable extends Migration
             $table->string('action');
             $table->string('table_name');
             $table->unsignedBigInteger('record_id');
-            $table->text('new_state');
-            $table->text('old_state');
+            $table->text('new_state')->nullable();
+            $table->text('old_state')->nullable();
             $table->timestamps();
         });
     }
