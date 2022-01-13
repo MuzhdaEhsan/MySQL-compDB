@@ -11,6 +11,16 @@ class Course extends Model
     use HasFactory, SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'code',
+        'full_name'
+    ];
+
+    /**
      * Hidden attributes for serialization.
      *
      * @var array

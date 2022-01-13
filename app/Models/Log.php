@@ -10,6 +10,20 @@ class Log extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id',
+        'action',
+        'table_name',
+        'record_id',
+        'new_state',
+        'old_state'
+    ];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array

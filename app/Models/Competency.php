@@ -11,6 +11,17 @@ class Competency extends Model
     use HasFactory, SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'code',
+        'short_name',
+        'statement'
+    ];
+
+    /**
      * Hidden attributes for serialization.
      *
      * @var array
