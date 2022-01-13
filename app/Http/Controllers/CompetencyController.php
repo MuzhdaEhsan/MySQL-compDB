@@ -30,7 +30,7 @@ class CompetencyController extends Controller
      */
     public function create()
     {
-        //
+        return view('competencies.create');
     }
 
     /**
@@ -41,7 +41,7 @@ class CompetencyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

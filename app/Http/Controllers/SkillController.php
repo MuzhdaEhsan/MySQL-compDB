@@ -14,6 +14,10 @@ class SkillController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->expectsJson()) {
+            return response()->json(['skills' => Skill::all()]);
+        }
+
         $resultsPerPage = $request->query('resultsPerPage') ?? 10;
         $orderBy = $request->query('orderBy') ?? 'id';
         $orderByType = $request->query('orderByType') ?? 'asc';

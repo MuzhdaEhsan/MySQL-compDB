@@ -15,5 +15,6 @@ const mix = require("laravel-mix");
 // https://github.com/startbootstrap/startbootstrap-sb-admin
 // We copy SB Admin CSS code into /public/app.css directly
 mix.js("resources/js/app.js", "public/js")
-    // .sass('resources/sass/app.scss', 'public/css')
-    .sourceMaps();
+    // .sass("resources/sass/app.scss", "public/css")
+    .react()
+    .extract(["react"]);
