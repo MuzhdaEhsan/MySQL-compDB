@@ -13,7 +13,8 @@
                 @if (auth()->user()->isAdmin())
                     <div class="ms-3">
                         <a href="/competencies/trashed" class="btn btn-dark btn-sm rounded-pill">
-                            <i class="fa fa-trash"></i> Trashed records
+                            <i class="fa fa-trash"></i> Trashed competencies
+                            ({{ count($trashedCompetencies) === 0 ? 'Empty' : (count($trashedCompetencies) === 1 ? count($trashedCompetencies) . ' item' : count($trashedCompetencies) . ' items') }})
                         </a>
                     </div>
                 @endif

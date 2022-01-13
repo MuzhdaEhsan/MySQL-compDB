@@ -19,8 +19,9 @@ class CompetencyController extends Controller
         $orderByType = $request->query('orderByType') ?? 'asc';
 
         $competencies = Competency::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
+        $trashedCompetencies = Competency::onlyTrashed()->get();
 
-        return view('competencies.index', compact('competencies'));
+        return view('competencies.index', compact('competencies', 'trashedCompetencies'));
     }
 
     /**
@@ -92,6 +93,8 @@ class CompetencyController extends Controller
 
         $competency->delete();
 
+        // TODO: logs this event
+
         // Redirect to index page with flash message
         return redirect()
             ->action(
@@ -122,6 +125,8 @@ class CompetencyController extends Controller
 
         $competency->forceDelete();
 
+        // TODO: logs this event
+
         return back()->with(
             'status',
             "Successfully force deleted Competency $code - $shortName"
@@ -136,6 +141,8 @@ class CompetencyController extends Controller
         $competency = Competency::onlyTrashed()->where('id', $id)->firstOrFail();
 
         $competency->restore();
+
+        // TODO: logs this event
 
         return back()->with(
             'status',
