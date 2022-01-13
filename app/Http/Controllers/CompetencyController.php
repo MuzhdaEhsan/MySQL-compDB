@@ -42,7 +42,40 @@ class CompetencyController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $request->validate([
+            'type' => ['string', 'required'],
+            'short_name' => ['string', 'required'],
+        ]);
+
+        $latestRecordCodeNumber = 0;
+
+        // Get the latest record ordered by id to extract number from the code
+        $latestRecord = Competency::orderBy('id', 'desc')->first();
+        if ($latestRecord) {
+            $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
+        }
+
+        // Create a new competency record
+        $competency = Competency::create([
+            'code' => $request->input('type') . sprintf('%04d', $latestRecordCodeNumber + 1),
+            'short_name' => $request->input('short_name'),
+            'statement' => $request->input('statement')
+        ]);
+
+        // Add related skills 
+        $competency->skills()->attach($request->input('skills') ?? []);
+
+        if ($request->expectsJson()) {
+            return response()->json(['competency' => $competency]);
+        }
+
+        return redirect()
+            ->action(
+                [CompetencyController::class, 'index']
+            )->with(
+                'status',
+                "Successfully create a new Competency $competency->code - $competency->short_name"
+            );
     }
 
     /**

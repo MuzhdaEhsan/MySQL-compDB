@@ -45,7 +45,28 @@ class SkillController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'skill_short_name' => ['string', 'required'],
+        ]);
+
+        $latestRecordCodeNumber = 0;
+
+        // Get the latest record ordered by id to extract number from the code
+        $latestRecord = Skill::orderBy('id', 'desc')->first();
+        if ($latestRecord) {
+            $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
+        }
+
+        // Create a new skill record
+        $skill = Skill::create([
+            'code' => 'S' . sprintf('%04d', $latestRecordCodeNumber + 1),
+            'short_name' => $request->input('skill_short_name'),
+            'statement' => $request->input('skill_statement')
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['skill' => $skill]);
+        }
     }
 
     /**

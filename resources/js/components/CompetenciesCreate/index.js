@@ -12,13 +12,13 @@ function CompetenciesCreateView() {
     const [selectedSkills, setSelectedSkills] = useState([]);
 
     // Helper methods
-    const setFormsHeight = (mainPanel, selectedItemsPanel) => {
+    const setFormHeight = (mainPanel, selectedItemsPanel) => {
         // We set the height of the selected items panel to be equal to the height
         // of the main form because if there are too many selected items, we don't
         // want to display a long list of it while the main form looks empty
-        // We also set the minimum height to be 500 px to avoid the form from being too small
+        // We also set the minimum height to be 300 px to avoid the form from being too small
         const minHeight =
-            mainPanel.clientHeight >= 500 ? mainPanel.clientHeight : 500;
+            mainPanel.clientHeight >= 300 ? mainPanel.clientHeight : 300;
         selectedItemsPanel.setAttribute("style", `height: ${minHeight}px`);
     };
 
@@ -34,13 +34,20 @@ function CompetenciesCreateView() {
             const index = items.findIndex(
                 (item) => item.id === toBeAddedItem.id
             );
+
+            // In case we add a new item by creating a new one using modal
+            // The index would return -1 because the object isn't in the current items list
+            if (index === -1) return items;
+
             items.splice(index, 1);
+            // Return a new array to trigger rerendering
             return [...items];
         });
 
         // Add that item to the selected items list
         setSelectedItems((selectedItems) => {
             selectedItems.push(toBeAddedItem);
+            // Return a new array to trigger rerendering
             return [...selectedItems];
         });
     };
@@ -52,12 +59,14 @@ function CompetenciesCreateView() {
                 (item) => item.id === toBeRemovedItem.id
             );
             selectedItems.splice(index, 1);
+            // Return a new array to trigger rerendering
             return [...selectedItems];
         });
 
         // Add that item to the items list
         setItems((items) => {
             items.push(toBeRemovedItem);
+            // Return a new array to trigger rerendering
             return [...items];
         });
     };
@@ -90,19 +99,11 @@ function CompetenciesCreateView() {
 
     // Side effects
     useEffect(() => {
-        const prepare = async () => {
-            await fetchOriginalData();
-            setFormsHeight(
-                document.querySelector("#skillsForm"),
-                document.querySelector("#selectedSkillsPanel")
-            );
-        };
-
-        prepare();
+        fetchOriginalData();
     }, []);
 
     useEffect(() => {
-        setFormsHeight(
+        setFormHeight(
             document.querySelector("#skillsForm"),
             document.querySelector("#selectedSkillsPanel")
         );
