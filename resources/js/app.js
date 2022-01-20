@@ -15,3 +15,5 @@ require("./bootstrap");
 require("./components/CompetenciesCreate");
 require("./components/CompetenciesEdit");
 require("./components/SkillsCreate");
+require("./components/AttributeCreate");
+require("./components/KnowledgeCreate");

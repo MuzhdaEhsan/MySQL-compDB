@@ -5,11 +5,24 @@ import { isNumber } from "lodash";
 
 import Form from "./Form";
 import SkillAccordion from "./SkillAccordion";
+import AttributeAccordion from "./AttributeAccordion";
+import KnowledgeAccordion from "./KnowledgeAccordion";
+//import CourseAccordion from "./CourseAccordion";
 
 function CompetenciesCreateView() {
     // States
     const [skills, setSkills] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
+
+    const [attributes, setAttributes] = useState([]);
+    const [selectedAttributes, setSelectedAttributes] = useState([]);
+
+    const [aKnowledge, setKnowledge] = useState([]);
+    const [selectedKnowledge, setSelectedKnowledge] = useState([]);
+
+    //const [courses, setCourses] = useState([]);
+    //const [selectedCourses, setSelectedCourses] = useState([]);
+
 
     // Helper methods
     const setFormHeight = (mainPanel, selectedItemsPanel) => {
@@ -72,15 +85,39 @@ function CompetenciesCreateView() {
     };
 
     const fetchOriginalData = async () => {
-        const { data } = await axios.get("/skills", {
+        const { data: dataSkill } = await axios.get("/skills", {
             headers: {
                 Accept: "application/json",
             },
         });
 
-        setSkills(data?.skills ?? []);
-    };
+        const { data: dataAtt } = await axios.get("/attributes", {
+            headers: {
+                Accept: "application/json",
+            },
+        });
 
+        const { data: dataKnow } = await axios.get("/knowledge", {
+            headers: {
+                Accept: "application/json",
+            },
+        });
+
+        /*const { data: dataCourse } = await axios.get("/courses", {
+            headers: {
+                Accept: "application/json",
+            },
+        });*/
+
+        
+        
+        setSkills(dataSkill?.skills ?? []);
+        setAttributes(dataAtt?.attributes ?? []);
+        setKnowledge(dataKnow?.aKnowledge ?? []);
+        //setCourses(dataCourse?.courses ?? []);
+        
+    };
+    
     const submitForm = (event) => {
         event.preventDefault();
 
@@ -101,13 +138,22 @@ function CompetenciesCreateView() {
     useEffect(() => {
         fetchOriginalData();
     }, []);
-
+    
     useEffect(() => {
         setFormHeight(
             document.querySelector("#skillsForm"),
-            document.querySelector("#selectedSkillsPanel")
+            document.querySelector("#selectedSkillsPanel"),
+
+            document.querySelector("#attributesForm"),
+            document.querySelector("#selectedAttributesPanel"),
+
+            document.querySelector("#knowledgeForm"),
+            document.querySelector("#selectedKnowledgePanel"),
+
+            //document.querySelector("#coursesForm"),
+            //document.querySelector("#selectedCoursesPanel")
         );
-    }, [skills]);
+    }, [skills], [attributes], [aKnowledge]);
 
     return (
         <div className="container py-4">
@@ -126,6 +172,34 @@ function CompetenciesCreateView() {
                     removeItem={removeItem}
                 />
             </div>
+            <div className="accordion my-3">
+                {/* Add Attributes section */}
+                <AttributeAccordion
+                    attributes={attributes}
+                    setAttributes={setAttributes}
+                    selectedAttributes={selectedAttributes}
+                    setSelectedAttributes={setSelectedAttributes}
+                    changePage={changePage}
+                    addItem={addItem}
+                    removeItem={removeItem}
+                />
+            </div>
+
+            <div className="accordion my-3">
+                {/* Add Knowledge section */}
+                <KnowledgeAccordion
+                    aKnowledge={aKnowledge}
+                    setKnowledge={setKnowledge}
+                    selectedKnowledge={selectedKnowledge}
+                    setSelectedKnowledge={setSelectedKnowledge}
+                    changePage={changePage}
+                    addItem={addItem}
+                    removeItem={removeItem}
+                />
+            </div>
+
+            
+            
 
             {/* Submit button  */}
             <div className="d-flex justify-content-center">

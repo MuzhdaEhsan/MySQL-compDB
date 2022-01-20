@@ -14,6 +14,11 @@ class KnowledgeController extends Controller
      */
     public function index(Request $request)
     {
+
+        if ($request->expectsJson()) {
+            return response()->json(['aKnowledge' => Knowledge::all()]);
+        }
+
         $resultsPerPage = $request->query('resultsPerPage') ?? 10;
         $orderBy = $request->query('orderBy') ?? 'id';
         $orderByType = $request->query('orderByType') ?? 'asc';

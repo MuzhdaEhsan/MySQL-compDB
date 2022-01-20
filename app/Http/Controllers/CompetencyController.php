@@ -52,6 +52,9 @@ class CompetencyController extends Controller
 
         // Get the latest record ordered by id to extract number from the code
         $latestRecord = Competency::orderBy('id', 'desc')->first();
+
+        //print_r($latestRecord); exit;
+
         if ($latestRecord) {
             $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
         }
@@ -64,12 +67,12 @@ class CompetencyController extends Controller
         ]);
 
         // Log this event
-        Log::create([
+        /*Log::create([
             'user_id' => $request->user()->id,
             'action' => Log::CREATE,
             'table_name' => Log::TABLE_COMPETENCIES,
             'record_id' => $competency->id,
-        ]);
+        ]);*/
 
         // Add related skills using ATTACH (add new items)
         $competency->skills()->attach($request->input('skills') ?? []);

@@ -14,6 +14,10 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->expectsJson()) {
+            return response()->json(['courses' => Course::all()]);
+        }
+
         $resultsPerPage = $request->query('resultsPerPage') ?? 10;
         $orderBy = $request->query('orderBy') ?? 'id';
         $orderByType = $request->query('orderByType') ?? 'asc';
