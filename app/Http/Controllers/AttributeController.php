@@ -64,7 +64,7 @@ class AttributeController extends Controller
 
         // Create a new attribute record
         $attribute = Attribute::create([
-            'code' => 'S' . sprintf('%04d', $latestRecordCodeNumber + 1),
+            'code' => 'A' . sprintf('%04d', $latestRecordCodeNumber + 1),
             'short_name' => $request->input('attribute_short_name'),
             'statement' => $request->input('attribute_statement')
         ]);
@@ -134,7 +134,7 @@ class AttributeController extends Controller
 
         // Create a new attribute record
         $attribute->update([
-            'code' => 'S' . substr($attribute->code, 1),
+            'code' => 'A' . substr($attribute->code, 1),
             'short_name' => $request->input('attribute_short_name'),
             'statement' => $request->input('attribute_statement')
         ]);

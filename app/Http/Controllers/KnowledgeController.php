@@ -60,7 +60,7 @@ class KnowledgeController extends Controller
 
         // Create a new knowledge record
         $knowledge = Knowledge::create([
-            'code' => 'S' . sprintf('%04d', $latestRecordCodeNumber + 1),
+            'code' => 'K' . sprintf('%04d', $latestRecordCodeNumber + 1),
             'short_name' => $request->input('knowledge_short_name'),
             'statement' => $request->input('knowledge_short_name')
         ]);

@@ -59,7 +59,7 @@ class CourseController extends Controller
 
         // Create a new course record
         $course = Course::create([
-            'code' => 'S' . sprintf('%04d', $latestRecordCodeNumber + 1),
+            'code' => 'C' . sprintf('%04d', $latestRecordCodeNumber + 1),
             'full_name' => $request->input('course_full_name')
         ]);
 
