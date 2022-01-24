@@ -48,28 +48,7 @@ class AttributeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'attribute_short_name' => ['string', 'required'],
-        ]);
-
-        $latestRecordCodeNumber = 0;
-
-        // Get the latest record ordered by id to extract number from the code
-        $latestRecord = Attribute::orderBy('id', 'desc')->first();
-        if ($latestRecord) {
-            $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
-        }
-
-        // Create a new attribute record
-        $attribute = Attribute::create([
-            'code' => 'S' . sprintf('%04d', $latestRecordCodeNumber + 1),
-            'short_name' => $request->input('attribute_short_name'),
-            'statement' => $request->input('attribute_statement')
-        ]);
-
-        if ($request->expectsJson()) {
-            return response()->json(['attribute' => $attribute]);
-        }
+        //
     }
 
     /**
