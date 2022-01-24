@@ -2,38 +2,52 @@
 
 @section('content')
     <div class="container py-2">
-        {{-- Results per page selector --}}
+    {{-- Results per page selector --}}
         <div class="row justify-content-center">
-            <div class="col-md-8 d-flex justify-content-end align-items-center">
-                <p class="mb-0 me-1">Results per page: </p>
-                <select id="per-page-select">
-                    <option value="10" {{ request()->query('resultsPerPage') == 10 ? 'selected' : '' }}>10</option>
-                    <option value="25" {{ request()->query('resultsPerPage') == 25 ? 'selected' : '' }}>25</option>
-                    <option value="50" {{ request()->query('resultsPerPage') == 50 ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ request()->query('resultsPerPage') == 100 ? 'selected' : '' }}>100</option>
-                </select>
+            <div class="col-5 d-flex align-items-center">
+                <div>
+                    <a href="/attributes/create" class="btn btn-primary btn-sm rounded-pill">
+                        <i class="fa fa-plus"></i> Create
+                    </a>
+                </div>
+                @if (auth()->user()->isAdmin())
+                    <div class="ms-3">
+                        <a href="/attributes/trashed" class="btn btn-dark btn-sm rounded-pill">
+                            <i class="fa fa-trash"></i> Trashed attributes
+                            ({{ count($trashedAttributes) === 0 ? 'Empty' : (count($trashedAttributes) === 1 ? count($trashedAttributes) . ' item' : count($trashedAttributes) . ' items') }})
+                        </a>
+                    </div>
+                @endif
             </div>
-        </div>
+            <div class="col-3">
+                <div class="d-flex justify-content-end align-items-center mb-2">
+                    <p class="mb-0 me-1">Results per page: </p>
+                    <select id="per-page-select">
+                        <option value="10" {{ request()->query('resultsPerPage') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="25" {{ request()->query('resultsPerPage') == 25 ? 'selected' : '' }}>25</option>
+                        <option value="50" {{ request()->query('resultsPerPage') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request()->query('resultsPerPage') == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                </div>
 
-        {{-- Sorting selector --}}
-        <div class="row justify-content-center mt-1">
-            <div class="col-md-8 d-flex justify-content-end align-items-center">
-                <p class="mb-0 me-1">Sort by: </p>
-                <select id="sort-select">
-                    <option value="default">Default</option>
-                    <option value="short_name.asc"
-                        {{ request()->query('orderBy') === 'short_name' && request()->query('orderByType') === 'asc' ? 'selected' : '' }}>
-                        Short name (ASC)</option>
-                    <option value="short_name.desc"
-                        {{ request()->query('orderBy') === 'short_name' && request()->query('orderByType') === 'desc' ? 'selected' : '' }}>
-                        Short name (DESC)</option>
-                    <option value="statement.asc"
-                        {{ request()->query('orderBy') === 'statement' && request()->query('orderByType') === 'asc' ? 'selected' : '' }}>
-                        Statement (ASC)</option>
-                    <option value="statement.desc"
-                        {{ request()->query('orderBy') === 'statement' && request()->query('orderByType') === 'desc' ? 'selected' : '' }}>
-                        Statement (DESC)</option>
-                </select>
+                <div class="d-flex justify-content-end align-items-center">
+                    <p class="mb-0 me-1">Sort by: </p>
+                    <select id="sort-select">
+                        <option value="default">Default</option>
+                        <option value="short_name.asc"
+                            {{ request()->query('orderBy') === 'short_name' && request()->query('orderByType') === 'asc' ? 'selected' : '' }}>
+                            Short name (ASC)</option>
+                        <option value="short_name.desc"
+                            {{ request()->query('orderBy') === 'short_name' && request()->query('orderByType') === 'desc' ? 'selected' : '' }}>
+                            Short name (DESC)</option>
+                        <option value="statement.asc"
+                            {{ request()->query('orderBy') === 'statement' && request()->query('orderByType') === 'asc' ? 'selected' : '' }}>
+                            Statement (ASC)</option>
+                        <option value="statement.desc"
+                            {{ request()->query('orderBy') === 'statement' && request()->query('orderByType') === 'desc' ? 'selected' : '' }}>
+                            Statement (DESC)</option>
+                    </select>
+                </div>
             </div>
         </div>
 

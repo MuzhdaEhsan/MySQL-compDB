@@ -18,3 +18,4 @@ require("./components/SkillsCreate");
 require("./components/AttributeCreate");
 require("./components/KnowledgeCreate");
 require("./components/CourseCreate");
+require("./components/AttributeEdit");

@@ -42,6 +42,11 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // TODO: force delete and restore routes for other resources
+        Route::prefix('attributes')->group(function () {
+            Route::get('trashed', [AttributeController::class, 'trashed']);
+            Route::delete('{id}/force-delete', [AttributeController::class, 'forceDelete']);
+            Route::post('{id}/restore', [AttributeController::class, 'restore']);
+        });
     });
 
     // TODO: Modify index pages of other resources to match competency index page
