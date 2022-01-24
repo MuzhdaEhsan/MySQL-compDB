@@ -46,7 +46,28 @@ class KnowledgeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'knowledge_short_name' => ['string', 'required'],
+        ]);
+
+        $latestRecordCodeNumber = 0;
+
+        // Get the latest record ordered by id to extract number from the code
+        $latestRecord = Knowledge::orderBy('id', 'desc')->first();
+        if ($latestRecord) {
+            $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
+        }
+
+        // Create a new knowledge record
+        $knowledge = Knowledge::create([
+            'code' => 'S' . sprintf('%04d', $latestRecordCodeNumber + 1),
+            'short_name' => $request->input('knowledge_short_name'),
+            'statement' => $request->input('knowledge_short_name')
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['knowledge' => $knowledge]);
+        }
     }
 
     /**

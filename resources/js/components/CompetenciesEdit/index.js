@@ -5,11 +5,23 @@ import { isNumber } from "lodash";
 
 import Form from "./Form";
 import SkillAccordion from "./SkillAccordion";
+import AttributeAccordion from "./AttributeAccordion";
+import KnowledgeAccordion from "./KnowledgeAccordion";
+import CourseAccordion from "./CourseAccordion";
 
 const CompetenciesEditView = () => {
     // States
     const [skills, setSkills] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
+
+    const [attributes, setAttributes] = useState([]);
+    const [selectedAttributes, setSelectedAttributes] = useState([]);
+
+    const [aKnowledge, setKnowledge] = useState([]);
+    const [selectedKnowledge, setSelectedKnowledge] = useState([]);
+
+    const [courses, setCourses] = useState([]);
+    const [selectedCourses, setSelectedCourses] = useState([]);
 
     // Helper methods
     const setFormHeight = (mainPanel, selectedItemsPanel) => {
@@ -72,21 +84,40 @@ const CompetenciesEditView = () => {
     };
 
     const fetchOriginalData = async () => {
-        const { data } = await axios.get("/skills", {
+        const { data: dataSkill } = await axios.get("/skills", {
             headers: {
                 Accept: "application/json",
             },
         });
 
-        // Data from Blade
-        if (typeof originalRelatedSkills === "string") {
+        const { data: dataAtt } = await axios.get("/attributes", {
+            headers: {
+                Accept: "application/json",
+            },
+        });
+
+        const { data: dataKnow } = await axios.get("/knowledge", {
+            headers: {
+                Accept: "application/json",
+            },
+        });
+
+
+        const { data: dataCourse } = await axios.get("/courses", {
+            headers: {
+                Accept: "application/json",
+            },
+        });
+
+        // Data from Blade for skill
+        if (typeof originalRelatedSkills === "string") {   
             originalRelatedSkills = JSON.parse(
                 originalRelatedSkills.replaceAll("&quot;", '"')
             );
             setSelectedSkills(originalRelatedSkills);
 
             // Remove the original selected skills from the skills list
-            let skills = data?.skills ?? [];
+            let skills = dataSkill?.skills ?? [];
             for (let i = 0; i < skills.length; ++i) {
                 for (let j = 0; j < originalRelatedSkills.length; ++j) {
                     if (skills[i].id === originalRelatedSkills[j].id) {
@@ -96,6 +127,66 @@ const CompetenciesEditView = () => {
             }
             setSkills(skills);
         }
+
+        // Data from Blade for attribute
+        if (typeof originalRelatedAttributes === "string") {
+            
+            originalRelatedAttributes = JSON.parse(
+                originalRelatedAttributes.replaceAll("&quot;", '"')
+            );
+            setSelectedAttributes(originalRelatedAttributes);
+
+            // Remove the original selected attributes from the attributes list
+            let attributes = dataAtt?.attributes ?? [];
+            for (let i = 0; i < attributes.length; ++i) {
+                for (let j = 0; j < originalRelatedAttributes.length; ++j) {
+                    if (attributes[i].id === originalRelatedAttributes[j].id) {
+                        attributes.splice(i, 1);
+                    }
+                }
+            }
+            setAttributes(attributes);
+        }
+
+        // Data from Blade for knowledge
+        if (typeof originalRelatedKnowledge === "string") {
+            
+            originalRelatedKnowledge = JSON.parse(
+                originalRelatedKnowledge.replaceAll("&quot;", '"')
+            );
+            setSelectedKnowledge(originalRelatedKnowledge);
+
+            // Remove the original selected knowledge from the knowledge list
+            let aKnowledge = dataKnow?.aKnowledge ?? [];
+            for (let i = 0; i < aKnowledge.length; ++i) {
+                for (let j = 0; j < originalRelatedKnowledge.length; ++j) {
+                    if (aKnowledge[i].id === originalRelatedKnowledge[j].id) {
+                        aKnowledge.splice(i, 1);
+                    }
+                }
+            }
+            setKnowledge(aKnowledge);
+        }
+
+        //console.log(originalRelatedCourses);
+        // Data from Blade for course
+        if (typeof originalRelatedCourses === "string") {   
+            originalRelatedCourses = JSON.parse(
+                originalRelatedCourses.replaceAll("&quot;", '"')
+            );
+            setSelectedCourses(originalRelatedCourses);
+
+            // Remove the original selected courses from the courses list
+            let courses = dataCourse?.courses ?? [];
+            for (let i = 0; i < courses.length; ++i) {
+                for (let j = 0; j < originalRelatedCourses.length; ++j) {
+                    if (courses[i].id === originalRelatedCourses[j].id) {
+                        courses.splice(i, 1);
+                    }
+                }
+            }
+            setCourses(courses);
+        }
     };
 
     const submitForm = (event) => {
@@ -103,10 +194,38 @@ const CompetenciesEditView = () => {
 
         const form = document.querySelector("#competencyEditForm");
 
+        // get the selected skills to update
         selectedSkills.forEach((skill) => {
             const input = document.createElement("input");
             input.setAttribute("name", "skills[]");
             input.value = skill?.id;
+            input.classList.add("d-none");
+            form.appendChild(input);
+        });
+
+        // get the selected attributes to update
+        selectedAttributes.forEach((attribute) => {
+            const input = document.createElement("input");
+            input.setAttribute("name", "attributes[]");
+            input.value = attribute?.id;
+            input.classList.add("d-none");
+            form.appendChild(input);
+        });
+
+        // get the selected knowledge to update
+        selectedKnowledge.forEach((knowledge) => {
+            const input = document.createElement("input");
+            input.setAttribute("name", "aKnowledge[]");
+            input.value = knowledge?.id;
+            input.classList.add("d-none");
+            form.appendChild(input);
+        });
+
+        // get the selected courses to update
+        selectedCourses.forEach((course) => {
+            const input = document.createElement("input");
+            input.setAttribute("name", "courses[]");
+            input.value = course?.id;
             input.classList.add("d-none");
             form.appendChild(input);
         });
@@ -122,9 +241,18 @@ const CompetenciesEditView = () => {
     useEffect(() => {
         setFormHeight(
             document.querySelector("#skillsForm"),
-            document.querySelector("#selectedSkillsPanel")
+            document.querySelector("#selectedSkillsPanel"),
+
+            document.querySelector("#attributesForm"),
+            document.querySelector("#selectedAttributesPanel"),
+
+            document.querySelector("#knowledgeForm"),
+            document.querySelector("#selectedKnowledgePanel"),
+
+            document.querySelector("#coursesForm"),
+            document.querySelector("#selectedCoursesPanel")
         );
-    }, [skills]);
+    }, [skills],[attributes],[aKnowledge],[courses]);
 
     return (
         <div className="container py-4">
@@ -138,6 +266,45 @@ const CompetenciesEditView = () => {
                     setSkills={setSkills}
                     selectedSkills={selectedSkills}
                     setSelectedSkills={setSelectedSkills}
+                    changePage={changePage}
+                    addItem={addItem}
+                    removeItem={removeItem}
+                />
+            </div>
+
+            <div className="accordion my-3">
+                {/* Add attributes section */}
+                <AttributeAccordion
+                    attributes={attributes}
+                    setAttributes={setAttributes}
+                    selectedAttributes={selectedAttributes}
+                    setSelectedAttributes={setSelectedAttributes}
+                    changePage={changePage}
+                    addItem={addItem}
+                    removeItem={removeItem}
+                />
+            </div>
+
+            <div className="accordion my-3">
+                {/* Add knowledge section */}
+                <KnowledgeAccordion
+                    aKnowledge={aKnowledge}
+                    setKnowledge={setKnowledge}
+                    selectedKnowledge={selectedKnowledge}
+                    setSelectedKnowledge={setSelectedKnowledge}
+                    changePage={changePage}
+                    addItem={addItem}
+                    removeItem={removeItem}
+                />
+            </div>
+
+            <div className="accordion my-3">
+                {/* Add course section */}
+                <CourseAccordion
+                    courses={courses}
+                    setCourses={setCourses}
+                    selectedCourses={selectedCourses}
+                    setSelectedCourses={setSelectedCourses}
                     changePage={changePage}
                     addItem={addItem}
                     removeItem={removeItem}

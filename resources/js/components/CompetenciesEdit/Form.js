@@ -4,7 +4,7 @@ const Form = () => {
     return (
         <div className="row justify-content-center">
             <div className="col-6">
-                <p className="fs-4 text-center">Create a new competency:</p>
+                <p className="fs-4 text-center">Edit competency:</p>
                 {/* Competency type */}
                 <div className="form-check">
                     <input

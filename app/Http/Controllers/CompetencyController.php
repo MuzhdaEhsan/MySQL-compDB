@@ -67,15 +67,19 @@ class CompetencyController extends Controller
         ]);
 
         // Log this event
-        /*Log::create([
+        Log::create([
             'user_id' => $request->user()->id,
             'action' => Log::CREATE,
             'table_name' => Log::TABLE_COMPETENCIES,
             'record_id' => $competency->id,
-        ]);*/
+            'new_state' => $competency->toJson()
+        ]);
 
         // Add related skills using ATTACH (add new items)
         $competency->skills()->attach($request->input('skills') ?? []);
+        $competency->related_attributes()->attach($request->input('attributes') ?? []);
+        $competency->knowledge()->attach($request->input('aKnowledge') ?? []);
+        $competency->courses()->attach($request->input('courses') ?? []);
 
         if ($request->expectsJson()) {
             return response()->json(['competency' => $competency]);
@@ -147,6 +151,9 @@ class CompetencyController extends Controller
 
         // Add related skills using SYNC (synchronize the list)
         $competency->skills()->sync($request->input('skills') ?? []);
+        $competency->related_attributes()->sync($request->input('attributes') ?? []);
+        $competency->knowledge()->sync($request->input('aKnowledge') ?? []);
+        $competency->courses()->sync($request->input('courses') ?? []);
 
         if ($request->expectsJson()) {
             return response()->json(['competency' => $competency]);
@@ -167,15 +174,22 @@ class CompetencyController extends Controller
      * @param  \App\Models\Competency  $competency
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Competency $competency)
+    public function destroy(Request $request, Competency $competency)
     {
         // Get the code and short name of this record before deleting
         $code = $competency->code;
         $shortName = $competency->short_name;
 
         $competency->delete();
-
-        // TODO: logs this event
+       
+        // Log this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::DELETE,
+            'table_name' => Log::TABLE_COMPETENCIES,
+            'record_id' => $competency->id,
+            'new_state' => $competency->toJson()
+        ]);
 
         // Redirect to index page with flash message
         return redirect()
@@ -199,7 +213,7 @@ class CompetencyController extends Controller
     /**
      * Force delete a competency.
      */
-    public function forceDelete($id)
+    public function forceDelete(Request $request, $id)
     {
         $competency = Competency::onlyTrashed()->where('id', $id)->firstOrFail();
         $code = $competency->code;
@@ -207,7 +221,14 @@ class CompetencyController extends Controller
 
         $competency->forceDelete();
 
-        // TODO: logs this event
+        // logs this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::FORCE_DELETE,
+            'table_name' => Log::TABLE_COMPETENCIES,
+            'record_id' => $competency->id,
+            'new_state' => $competency->toJson()
+        ]);
 
         return back()->with(
             'status',
@@ -218,13 +239,20 @@ class CompetencyController extends Controller
     /**
      * Restore a competency.
      */
-    public function restore($id)
+    public function restore(Request $request, $id)
     {
         $competency = Competency::onlyTrashed()->where('id', $id)->firstOrFail();
 
         $competency->restore();
 
-        // TODO: logs this event
+        // logs this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::RESTORE,
+            'table_name' => Log::TABLE_COMPETENCIES,
+            'record_id' => $competency->id,
+            'new_state' => $competency->toJson()
+        ]);
 
         return back()->with(
             'status',

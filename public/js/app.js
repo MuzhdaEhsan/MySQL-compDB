@@ -5271,6 +5271,8 @@ __webpack_require__(/*! ./components/AttributeCreate */ "./resources/js/componen
 
 __webpack_require__(/*! ./components/KnowledgeCreate */ "./resources/js/components/KnowledgeCreate/index.js");
 
+__webpack_require__(/*! ./components/CourseCreate */ "./resources/js/components/CourseCreate/index.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -5835,6 +5837,482 @@ var AttributeModal = function AttributeModal(_ref) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AttributeModal);
+
+/***/ }),
+
+/***/ "./resources/js/components/CompetenciesCreate/CourseAccordion.js":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/CompetenciesCreate/CourseAccordion.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _CourseModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CourseModal */ "./resources/js/components/CompetenciesCreate/CourseModal.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+var ITEMS_PER_PAGE = 8;
+
+var CourseAccordion = function CourseAccordion(_ref) {
+  var courses = _ref.courses,
+      setCourses = _ref.setCourses,
+      selectedCourses = _ref.selectedCourses,
+      setSelectedCourses = _ref.setSelectedCourses,
+      changePage = _ref.changePage,
+      addItem = _ref.addItem,
+      removeItem = _ref.removeItem;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      coursePage = _useState2[0],
+      setCoursePage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      keyword = _useState4[0],
+      setKeyword = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      searchResult = _useState6[0],
+      setSearchResult = _useState6[1]; // Side effects
+
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var prepare = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _data$data;
+
+        var _yield$axios$get, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(keyword.length === 0)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                setSearchResult([]);
+                return _context.abrupt("return");
+
+              case 3:
+                _context.next = 5;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/stateful-api/search", {
+                  params: {
+                    keyword: keyword,
+                    type: "courses",
+                    limit: ITEMS_PER_PAGE
+                  }
+                });
+
+              case 5:
+                _yield$axios$get = _context.sent;
+                data = _yield$axios$get.data;
+                setSearchResult((_data$data = data === null || data === void 0 ? void 0 : data.data) !== null && _data$data !== void 0 ? _data$data : []);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function prepare() {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    prepare();
+  }, [keyword]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    className: "accordion-item",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
+      className: "accordion-header",
+      id: "courseSelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+        className: "accordion-button",
+        type: "button",
+        "data-bs-toggle": "collapse",
+        "data-bs-target": "#courseSelectionBody",
+        "aria-expanded": "true",
+        "aria-controls": "courseSelectionBody",
+        children: "Add Courses"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      id: "courseSelectionBody",
+      className: "accordion-collapse collapse show",
+      "aria-labelledby": "courseSelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "accordion-body",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_CourseModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          setCourses: setCourses,
+          setSelectedCourses: setSelectedCourses,
+          addItem: addItem
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "row border",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "col-md-8 border-end",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              id: "coursesForm",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                className: "row justify-content-between mt-2",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "col-md-6",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "text",
+                    className: "form-control",
+                    placeholder: "Search for a course",
+                    value: keyword,
+                    onChange: function onChange(event) {
+                      return setKeyword(event.target.value);
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "col-md-4",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-secondary ms-auto d-flex",
+                    "data-bs-toggle": "modal",
+                    "data-bs-target": "#createNewCourseModal",
+                    children: "Add a new course"
+                  })
+                })]
+              }), keyword.length === 0 ? courses.slice((coursePage - 1) * ITEMS_PER_PAGE, (coursePage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE).map(function (course) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(course, setCourses, setSelectedCourses);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                    children: [course === null || course === void 0 ? void 0 : course.code, " -", " ", course === null || course === void 0 ? void 0 : course.full_name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("br", {})]
+                  })]
+                }, course.id);
+              }) : searchResult.map(function (course) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(course, setCourses, setSelectedCourses);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+                    dangerouslySetInnerHTML: {
+                      __html: course.highlight
+                    }
+                  })]
+                }, course.id);
+              }), keyword.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("nav", {
+                  "aria-label": "Page navigation",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("ul", {
+                    className: "pagination",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item ".concat(coursePage === 1 || courses.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setCoursePage(coursePage - 1);
+                        },
+                        children: "Previous"
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item active",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        children: coursePage
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item ".concat(coursePage === Math.ceil(courses.length / ITEMS_PER_PAGE) || courses.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setCoursePage(coursePage + 1);
+                        },
+                        children: "Next"
+                      })
+                    })]
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "col-md-6",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                      className: "input-group mb-3",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                        type: "text",
+                        className: "form-control",
+                        id: "coursesPageInput"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                        className: "btn btn-outline-secondary",
+                        type: "button",
+                        onClick: function onClick() {
+                          return changePage(document.querySelector("#coursesPageInput"), setCoursePage);
+                        },
+                        children: "Go to page"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "col-md-6 d-flex align-items-center",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                      className: "fw-bold",
+                      children: ["Total:", " ", Math.ceil(courses.length / ITEMS_PER_PAGE), " ", "pages (", courses.length, " ", "items)"]
+                    })
+                  })]
+                })]
+              })]
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            id: "selectedCoursesPanel",
+            className: "col-md-4 overflow-auto",
+            children: selectedCourses.map(function (course) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                className: "d-flex align-items-center border-bottom my-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "me-3",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-xs btn-danger",
+                    onClick: function onClick() {
+                      return removeItem(course, setCourses, setSelectedCourses);
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                      className: "fas fa-minus-circle"
+                    })
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                  children: [course === null || course === void 0 ? void 0 : course.code, " - ", course === null || course === void 0 ? void 0 : course.full_name]
+                })]
+              }, course.id);
+            })
+          })]
+        })]
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CourseAccordion);
+
+/***/ }),
+
+/***/ "./resources/js/components/CompetenciesCreate/CourseModal.js":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/CompetenciesCreate/CourseModal.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+var CourseModal = function CourseModal(_ref) {
+  var addItem = _ref.addItem,
+      setCourses = _ref.setCourses,
+      setSelectedCourses = _ref.setSelectedCourses;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      courseFullName = _useState2[0],
+      setCourseFullName = _useState2[1]; //const [skillStatement, setSkillStatement] = useState("");
+  // Helper methods
+
+
+  var saveCourse = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var _yield$axios$post, data;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+
+              if (courseFullName) {
+                _context.next = 3;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 3:
+              _context.next = 5;
+              return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/courses", {
+                course_full_name: courseFullName //skill_statement: skillStatement,
+
+              });
+
+            case 5:
+              _yield$axios$post = _context.sent;
+              data = _yield$axios$post.data;
+              addItem(data === null || data === void 0 ? void 0 : data.course, setCourses, setSelectedCourses); // Clear inputs and hide the modal
+
+              setCourseFullName("");
+              bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal.getInstance(document.getElementById("createNewCourseModal")).hide();
+              _context.next = 15;
+              break;
+
+            case 12:
+              _context.prev = 12;
+              _context.t0 = _context["catch"](0);
+              console.error(_context.t0);
+
+            case 15:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[0, 12]]);
+    }));
+
+    return function saveCourse() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    className: "modal fade",
+    id: "createNewCourseModal",
+    tabIndex: "-1",
+    "aria-labelledby": "exampleModalLabel",
+    "aria-hidden": "true",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "modal-dialog",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "modal-content",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-header",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
+            className: "modal-title",
+            id: "exampleModalLabel",
+            children: "Add a new Course"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn-close",
+            "data-bs-dismiss": "modal",
+            "aria-label": "Close"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          className: "modal-body",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+              htmlFor: "course_full_name",
+              className: "form-label",
+              children: "Short name"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+              type: "text",
+              className: "form-control",
+              id: "course_full_name",
+              name: "course_full_name",
+              value: courseFullName,
+              onChange: function onChange(event) {
+                return setCourseFullName(event.target.value);
+              }
+            })]
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-footer",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-secondary",
+            "data-bs-dismiss": "modal",
+            children: "Close"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-primary",
+            onClick: saveCourse,
+            children: "Add"
+          })]
+        })]
+      })
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CourseModal);
 
 /***/ }),
 
@@ -6942,7 +7420,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SkillAccordion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SkillAccordion */ "./resources/js/components/CompetenciesCreate/SkillAccordion.js");
 /* harmony import */ var _AttributeAccordion__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./AttributeAccordion */ "./resources/js/components/CompetenciesCreate/AttributeAccordion.js");
 /* harmony import */ var _KnowledgeAccordion__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./KnowledgeAccordion */ "./resources/js/components/CompetenciesCreate/KnowledgeAccordion.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _CourseAccordion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./CourseAccordion */ "./resources/js/components/CompetenciesCreate/CourseAccordion.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -6976,7 +7455,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
- //import CourseAccordion from "./CourseAccordion";
+
 
 
 
@@ -7011,9 +7490,17 @@ function CompetenciesCreateView() {
   var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
       _useState12 = _slicedToArray(_useState11, 2),
       selectedKnowledge = _useState12[0],
-      setSelectedKnowledge = _useState12[1]; //const [courses, setCourses] = useState([]);
-  //const [selectedCourses, setSelectedCourses] = useState([]);
-  // Helper methods
+      setSelectedKnowledge = _useState12[1];
+
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState14 = _slicedToArray(_useState13, 2),
+      courses = _useState14[0],
+      setCourses = _useState14[1];
+
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState16 = _slicedToArray(_useState15, 2),
+      selectedCourses = _useState16[0],
+      setSelectedCourses = _useState16[1]; // Helper methods
 
 
   var setFormHeight = function setFormHeight(mainPanel, selectedItemsPanel) {
@@ -7072,9 +7559,9 @@ function CompetenciesCreateView() {
 
   var fetchOriginalData = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      var _dataSkill$skills, _dataAtt$attributes, _dataKnow$aKnowledge;
+      var _dataSkill$skills, _dataAtt$attributes, _dataKnow$aKnowledge, _dataCourse$courses;
 
-      var _yield$axios$get, dataSkill, _yield$axios$get2, dataAtt, _yield$axios$get3, dataKnow;
+      var _yield$axios$get, dataSkill, _yield$axios$get2, dataAtt, _yield$axios$get3, dataKnow, _yield$axios$get4, dataCourse;
 
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
         while (1) {
@@ -7110,17 +7597,22 @@ function CompetenciesCreateView() {
             case 10:
               _yield$axios$get3 = _context.sent;
               dataKnow = _yield$axios$get3.data;
+              _context.next = 14;
+              return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/courses", {
+                headers: {
+                  Accept: "application/json"
+                }
+              });
 
-              /*const { data: dataCourse } = await axios.get("/courses", {
-                  headers: {
-                      Accept: "application/json",
-                  },
-              });*/
+            case 14:
+              _yield$axios$get4 = _context.sent;
+              dataCourse = _yield$axios$get4.data;
               setSkills((_dataSkill$skills = dataSkill === null || dataSkill === void 0 ? void 0 : dataSkill.skills) !== null && _dataSkill$skills !== void 0 ? _dataSkill$skills : []);
               setAttributes((_dataAtt$attributes = dataAtt === null || dataAtt === void 0 ? void 0 : dataAtt.attributes) !== null && _dataAtt$attributes !== void 0 ? _dataAtt$attributes : []);
-              setKnowledge((_dataKnow$aKnowledge = dataKnow === null || dataKnow === void 0 ? void 0 : dataKnow.aKnowledge) !== null && _dataKnow$aKnowledge !== void 0 ? _dataKnow$aKnowledge : []); //setCourses(dataCourse?.courses ?? []);
+              setKnowledge((_dataKnow$aKnowledge = dataKnow === null || dataKnow === void 0 ? void 0 : dataKnow.aKnowledge) !== null && _dataKnow$aKnowledge !== void 0 ? _dataKnow$aKnowledge : []);
+              setCourses((_dataCourse$courses = dataCourse === null || dataCourse === void 0 ? void 0 : dataCourse.courses) !== null && _dataCourse$courses !== void 0 ? _dataCourse$courses : []);
 
-            case 15:
+            case 20:
             case "end":
               return _context.stop();
           }
@@ -7135,11 +7627,36 @@ function CompetenciesCreateView() {
 
   var submitForm = function submitForm(event) {
     event.preventDefault();
-    var form = document.querySelector("#competencyCreateForm");
+    var form = document.querySelector("#competencyCreateForm"); // get the selected skills to add 
+
     selectedSkills.forEach(function (skill) {
       var input = document.createElement("input");
       input.setAttribute("name", "skills[]");
       input.value = skill === null || skill === void 0 ? void 0 : skill.id;
+      input.classList.add("d-none");
+      form.appendChild(input);
+    }); // get the selected attributes to add 
+
+    selectedAttributes.forEach(function (attribute) {
+      var input = document.createElement("input");
+      input.setAttribute("name", "attributes[]");
+      input.value = attribute === null || attribute === void 0 ? void 0 : attribute.id;
+      input.classList.add("d-none");
+      form.appendChild(input);
+    }); // get the selected knowledge to add 
+
+    selectedKnowledge.forEach(function (knowledge) {
+      var input = document.createElement("input");
+      input.setAttribute("name", "aKnowledge[]");
+      input.value = knowledge === null || knowledge === void 0 ? void 0 : knowledge.id;
+      input.classList.add("d-none");
+      form.appendChild(input);
+    }); // get the selected courses to add 
+
+    selectedCourses.forEach(function (course) {
+      var input = document.createElement("input");
+      input.setAttribute("name", "courses[]");
+      input.value = course === null || course === void 0 ? void 0 : course.id;
       input.classList.add("d-none");
       form.appendChild(input);
     });
@@ -7151,15 +7668,13 @@ function CompetenciesCreateView() {
     fetchOriginalData();
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    setFormHeight(document.querySelector("#skillsForm"), document.querySelector("#selectedSkillsPanel"), document.querySelector("#attributesForm"), document.querySelector("#selectedAttributesPanel"), document.querySelector("#knowledgeForm"), document.querySelector("#selectedKnowledgePanel") //document.querySelector("#coursesForm"),
-    //document.querySelector("#selectedCoursesPanel")
-    );
-  }, [skills], [attributes], [aKnowledge]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+    setFormHeight(document.querySelector("#skillsForm"), document.querySelector("#selectedSkillsPanel"), document.querySelector("#attributesForm"), document.querySelector("#selectedAttributesPanel"), document.querySelector("#knowledgeForm"), document.querySelector("#selectedKnowledgePanel"), document.querySelector("#coursesForm"), document.querySelector("#selectedCoursesPanel"));
+  }, [skills], [attributes], [aKnowledge], [courses]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
     className: "container py-4",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Form__WEBPACK_IMPORTED_MODULE_5__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Form__WEBPACK_IMPORTED_MODULE_5__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
       className: "accordion my-3",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_SkillAccordion__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_SkillAccordion__WEBPACK_IMPORTED_MODULE_6__["default"], {
         skills: skills,
         setSkills: setSkills,
         selectedSkills: selectedSkills,
@@ -7168,9 +7683,9 @@ function CompetenciesCreateView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
       className: "accordion my-3",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_AttributeAccordion__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_AttributeAccordion__WEBPACK_IMPORTED_MODULE_7__["default"], {
         attributes: attributes,
         setAttributes: setAttributes,
         selectedAttributes: selectedAttributes,
@@ -7179,9 +7694,9 @@ function CompetenciesCreateView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
       className: "accordion my-3",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_KnowledgeAccordion__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_KnowledgeAccordion__WEBPACK_IMPORTED_MODULE_8__["default"], {
         aKnowledge: aKnowledge,
         setKnowledge: setKnowledge,
         selectedKnowledge: selectedKnowledge,
@@ -7190,9 +7705,20 @@ function CompetenciesCreateView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+      className: "accordion my-3",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_CourseAccordion__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        courses: courses,
+        setCourses: setCourses,
+        selectedCourses: selectedCourses,
+        setSelectedCourses: setSelectedCourses,
+        changePage: changePage,
+        addItem: addItem,
+        removeItem: removeItem
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
         type: "button",
         className: "btn btn-primary",
         onClick: submitForm,
@@ -7205,8 +7731,981 @@ function CompetenciesCreateView() {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompetenciesCreateView);
 
 if (document.getElementById("competencies-create-view")) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(CompetenciesCreateView, {}), document.getElementById("competencies-create-view"));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(CompetenciesCreateView, {}), document.getElementById("competencies-create-view"));
 }
+
+/***/ }),
+
+/***/ "./resources/js/components/CompetenciesEdit/AttributeAccordion.js":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/CompetenciesEdit/AttributeAccordion.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _AttributeModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AttributeModal */ "./resources/js/components/CompetenciesEdit/AttributeModal.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+var ITEMS_PER_PAGE = 8;
+
+var AttributeAccordion = function AttributeAccordion(_ref) {
+  var attributes = _ref.attributes,
+      setAttributes = _ref.setAttributes,
+      selectedAttributes = _ref.selectedAttributes,
+      setSelectedAttributes = _ref.setSelectedAttributes,
+      changePage = _ref.changePage,
+      addItem = _ref.addItem,
+      removeItem = _ref.removeItem;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      attributePage = _useState2[0],
+      setAttributePage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      keyword = _useState4[0],
+      setKeyword = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      searchResult = _useState6[0],
+      setSearchResult = _useState6[1]; // Side effects
+
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var prepare = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _data$data;
+
+        var _yield$axios$get, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(keyword.length === 0)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                setSearchResult([]);
+                return _context.abrupt("return");
+
+              case 3:
+                _context.next = 5;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/stateful-api/search", {
+                  params: {
+                    keyword: keyword,
+                    type: "attributes",
+                    limit: ITEMS_PER_PAGE
+                  }
+                });
+
+              case 5:
+                _yield$axios$get = _context.sent;
+                data = _yield$axios$get.data;
+                setSearchResult((_data$data = data === null || data === void 0 ? void 0 : data.data) !== null && _data$data !== void 0 ? _data$data : []);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function prepare() {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    prepare();
+  }, [keyword]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    className: "accordion-item",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
+      className: "accordion-header",
+      id: "attributeSelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+        className: "accordion-button",
+        type: "button",
+        "data-bs-toggle": "collapse",
+        "data-bs-target": "#attributeSelectionBody",
+        "aria-expanded": "true",
+        "aria-controls": "attributeSelectionBody",
+        children: "Add Attributes"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      id: "attributeSelectionBody",
+      className: "accordion-collapse collapse show",
+      "aria-labelledby": "attributeSelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "accordion-body",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_AttributeModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          setAttributes: setAttributes,
+          setSelectedAttributes: setSelectedAttributes,
+          addItem: addItem
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "row border",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "col-md-8 border-end",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              id: "attributesForm",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                className: "row justify-content-between mt-2",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "col-md-6",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "text",
+                    className: "form-control",
+                    placeholder: "Search for a attribute",
+                    value: keyword,
+                    onChange: function onChange(event) {
+                      return setKeyword(event.target.value);
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "col-md-4",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-secondary ms-auto d-flex",
+                    "data-bs-toggle": "modal",
+                    "data-bs-target": "#createNewAttributeModal",
+                    children: "Add a new attribute"
+                  })
+                })]
+              }), keyword.length === 0 ? attributes.slice((attributePage - 1) * ITEMS_PER_PAGE, (attributePage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE).map(function (attribute) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(attribute, setAttributes, setSelectedAttributes);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                    children: [attribute === null || attribute === void 0 ? void 0 : attribute.code, " -", " ", attribute === null || attribute === void 0 ? void 0 : attribute.short_name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("br", {}), attribute === null || attribute === void 0 ? void 0 : attribute.statement]
+                  })]
+                }, attribute.id);
+              }) : searchResult.map(function (attribute) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(attribute, setAttributes, setSelectedAttributes);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+                    dangerouslySetInnerHTML: {
+                      __html: attribute.highlight
+                    }
+                  })]
+                }, attribute.id);
+              }), keyword.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("nav", {
+                  "aria-label": "Page navigation",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("ul", {
+                    className: "pagination",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item ".concat(attributePage === 1 || attributes.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setAttributePage(attributePage - 1);
+                        },
+                        children: "Previous"
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item active",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        children: attributePage
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item ".concat(attributePage === Math.ceil(attributes.length / ITEMS_PER_PAGE) || attributes.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setAttributePage(attributePage + 1);
+                        },
+                        children: "Next"
+                      })
+                    })]
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "col-md-6",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                      className: "input-group mb-3",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                        type: "text",
+                        className: "form-control",
+                        id: "attributesPageInput"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                        className: "btn btn-outline-secondary",
+                        type: "button",
+                        onClick: function onClick() {
+                          return changePage(document.querySelector("#attributesPageInput"), setAttributePage);
+                        },
+                        children: "Go to page"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "col-md-6 d-flex align-items-center",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                      className: "fw-bold",
+                      children: ["Total:", " ", Math.ceil(attributes.length / ITEMS_PER_PAGE), " ", "pages (", attributes.length, " ", "items)"]
+                    })
+                  })]
+                })]
+              })]
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            id: "selectedAttributesPanel",
+            className: "col-md-4 overflow-auto",
+            children: selectedAttributes.map(function (attribute) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                className: "d-flex align-items-center border-bottom my-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "me-3",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-xs btn-danger",
+                    onClick: function onClick() {
+                      return removeItem(attribute, setAttributes, setSelectedAttributes);
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                      className: "fas fa-minus-circle"
+                    })
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                  children: [attribute === null || attribute === void 0 ? void 0 : attribute.code, " - ", attribute === null || attribute === void 0 ? void 0 : attribute.short_name]
+                })]
+              }, attribute.id);
+            })
+          })]
+        })]
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AttributeAccordion);
+
+/***/ }),
+
+/***/ "./resources/js/components/CompetenciesEdit/AttributeModal.js":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/CompetenciesEdit/AttributeModal.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+var AttributeModal = function AttributeModal(_ref) {
+  var addItem = _ref.addItem,
+      setAttributes = _ref.setAttributes,
+      setSelectedAttributes = _ref.setSelectedAttributes;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      attributeShortName = _useState2[0],
+      setAttributeShortName = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      attributeStatement = _useState4[0],
+      setAttributeStatement = _useState4[1]; // Helper methods
+
+
+  var saveAttribute = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var _yield$axios$post, data;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+
+              if (attributeShortName) {
+                _context.next = 3;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 3:
+              _context.next = 5;
+              return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/attributes", {
+                attribute_short_name: attributeShortName,
+                attribute_statement: attributeStatement
+              });
+
+            case 5:
+              _yield$axios$post = _context.sent;
+              data = _yield$axios$post.data;
+              addItem(data === null || data === void 0 ? void 0 : data.attribute, setAttributes, setSelectedAttributes); // Clear inputs and hide the modal
+
+              setAttributeShortName("");
+              setAttributeStatement("");
+              bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal.getInstance(document.getElementById("createNewAttributeModal")).hide();
+              _context.next = 16;
+              break;
+
+            case 13:
+              _context.prev = 13;
+              _context.t0 = _context["catch"](0);
+              console.error(_context.t0);
+
+            case 16:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[0, 13]]);
+    }));
+
+    return function saveAttribute() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    className: "modal fade",
+    id: "createNewAttributeModal",
+    tabIndex: "-1",
+    "aria-labelledby": "exampleModalLabel",
+    "aria-hidden": "true",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "modal-dialog",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "modal-content",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-header",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
+            className: "modal-title",
+            id: "exampleModalLabel",
+            children: "Add a new Attribute"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn-close",
+            "data-bs-dismiss": "modal",
+            "aria-label": "Close"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-body",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+              htmlFor: "attribute_short_name",
+              className: "form-label",
+              children: "Short name"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+              type: "text",
+              className: "form-control",
+              id: "attribute_short_name",
+              name: "attribute_short_name",
+              value: attributeShortName,
+              onChange: function onChange(event) {
+                return setAttributeShortName(event.target.value);
+              }
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+              htmlFor: "attribute_statement",
+              className: "form-label",
+              children: "Statement"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("textarea", {
+              className: "form-control",
+              id: "attribute_statement",
+              name: "attribute_statement",
+              rows: "2",
+              value: attributeStatement,
+              onChange: function onChange(event) {
+                return setAttributeStatement(event.target.value);
+              }
+            })]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-footer",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-secondary",
+            "data-bs-dismiss": "modal",
+            children: "Close"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-primary",
+            onClick: saveAttribute,
+            children: "Add"
+          })]
+        })]
+      })
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AttributeModal);
+
+/***/ }),
+
+/***/ "./resources/js/components/CompetenciesEdit/CourseAccordion.js":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/CompetenciesEdit/CourseAccordion.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _CourseModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CourseModal */ "./resources/js/components/CompetenciesEdit/CourseModal.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+var ITEMS_PER_PAGE = 8;
+
+var CourseAccordion = function CourseAccordion(_ref) {
+  var courses = _ref.courses,
+      setCourses = _ref.setCourses,
+      selectedCourses = _ref.selectedCourses,
+      setSelectedCourses = _ref.setSelectedCourses,
+      changePage = _ref.changePage,
+      addItem = _ref.addItem,
+      removeItem = _ref.removeItem;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      coursePage = _useState2[0],
+      setCoursePage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      keyword = _useState4[0],
+      setKeyword = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      searchResult = _useState6[0],
+      setSearchResult = _useState6[1]; // Side effects
+
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var prepare = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _data$data;
+
+        var _yield$axios$get, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(keyword.length === 0)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                setSearchResult([]);
+                return _context.abrupt("return");
+
+              case 3:
+                _context.next = 5;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/stateful-api/search", {
+                  params: {
+                    keyword: keyword,
+                    type: "courses",
+                    limit: ITEMS_PER_PAGE
+                  }
+                });
+
+              case 5:
+                _yield$axios$get = _context.sent;
+                data = _yield$axios$get.data;
+                setSearchResult((_data$data = data === null || data === void 0 ? void 0 : data.data) !== null && _data$data !== void 0 ? _data$data : []);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function prepare() {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    prepare();
+  }, [keyword]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    className: "accordion-item",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
+      className: "accordion-header",
+      id: "courseSelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+        className: "accordion-button",
+        type: "button",
+        "data-bs-toggle": "collapse",
+        "data-bs-target": "#courseSelectionBody",
+        "aria-expanded": "true",
+        "aria-controls": "courseSelectionBody",
+        children: "Add Courses"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      id: "courseSelectionBody",
+      className: "accordion-collapse collapse show",
+      "aria-labelledby": "courseSelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "accordion-body",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_CourseModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          setCourses: setCourses,
+          setSelectedCourses: setSelectedCourses,
+          addItem: addItem
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "row border",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "col-md-8 border-end",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              id: "coursesForm",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                className: "row justify-content-between mt-2",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "col-md-6",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "text",
+                    className: "form-control",
+                    placeholder: "Search for a course",
+                    value: keyword,
+                    onChange: function onChange(event) {
+                      return setKeyword(event.target.value);
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "col-md-4",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-secondary ms-auto d-flex",
+                    "data-bs-toggle": "modal",
+                    "data-bs-target": "#createNewCourseModal",
+                    children: "Add a new course"
+                  })
+                })]
+              }), keyword.length === 0 ? courses.slice((coursePage - 1) * ITEMS_PER_PAGE, (coursePage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE).map(function (course) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(course, setCourses, setSelectedCourses);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                    children: [course === null || course === void 0 ? void 0 : course.code, " -", " ", course === null || course === void 0 ? void 0 : course.full_name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("br", {})]
+                  })]
+                }, course.id);
+              }) : searchResult.map(function (course) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(course, setCourses, setSelectedCourses);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+                    dangerouslySetInnerHTML: {
+                      __html: course.highlight
+                    }
+                  })]
+                }, course.id);
+              }), keyword.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("nav", {
+                  "aria-label": "Page navigation",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("ul", {
+                    className: "pagination",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item ".concat(coursePage === 1 || courses.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setCoursePage(coursePage - 1);
+                        },
+                        children: "Previous"
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item active",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        children: coursePage
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item ".concat(coursePage === Math.ceil(courses.length / ITEMS_PER_PAGE) || courses.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setCoursePage(coursePage + 1);
+                        },
+                        children: "Next"
+                      })
+                    })]
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "col-md-6",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                      className: "input-group mb-3",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                        type: "text",
+                        className: "form-control",
+                        id: "coursesPageInput"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                        className: "btn btn-outline-secondary",
+                        type: "button",
+                        onClick: function onClick() {
+                          return changePage(document.querySelector("#coursesPageInput"), setCoursePage);
+                        },
+                        children: "Go to page"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "col-md-6 d-flex align-items-center",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                      className: "fw-bold",
+                      children: ["Total:", " ", Math.ceil(courses.length / ITEMS_PER_PAGE), " ", "pages (", courses.length, " ", "items)"]
+                    })
+                  })]
+                })]
+              })]
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            id: "selectedCoursesPanel",
+            className: "col-md-4 overflow-auto",
+            children: selectedCourses.map(function (course) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                className: "d-flex align-items-center border-bottom my-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "me-3",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-xs btn-danger",
+                    onClick: function onClick() {
+                      return removeItem(course, setCourses, setSelectedCourses);
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                      className: "fas fa-minus-circle"
+                    })
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                  children: [course === null || course === void 0 ? void 0 : course.code, " - ", course === null || course === void 0 ? void 0 : course.full_name]
+                })]
+              }, course.id);
+            })
+          })]
+        })]
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CourseAccordion);
+
+/***/ }),
+
+/***/ "./resources/js/components/CompetenciesEdit/CourseModal.js":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/CompetenciesEdit/CourseModal.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+var CourseModal = function CourseModal(_ref) {
+  var addItem = _ref.addItem,
+      setCourses = _ref.setCourses,
+      setSelectedCourses = _ref.setSelectedCourses;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      courseFullName = _useState2[0],
+      setCourseFullName = _useState2[1]; //const [skillStatement, setSkillStatement] = useState("");
+  // Helper methods
+
+
+  var saveCourse = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var _yield$axios$post, data;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+
+              if (courseFullName) {
+                _context.next = 3;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 3:
+              _context.next = 5;
+              return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/courses", {
+                course_full_name: courseFullName //skill_statement: skillStatement,
+
+              });
+
+            case 5:
+              _yield$axios$post = _context.sent;
+              data = _yield$axios$post.data;
+              addItem(data === null || data === void 0 ? void 0 : data.course, setCourses, setSelectedCourses); // Clear inputs and hide the modal
+
+              setCourseFullName("");
+              bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal.getInstance(document.getElementById("createNewCourseModal")).hide();
+              _context.next = 15;
+              break;
+
+            case 12:
+              _context.prev = 12;
+              _context.t0 = _context["catch"](0);
+              console.error(_context.t0);
+
+            case 15:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[0, 12]]);
+    }));
+
+    return function saveCourse() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    className: "modal fade",
+    id: "createNewCourseModal",
+    tabIndex: "-1",
+    "aria-labelledby": "exampleModalLabel",
+    "aria-hidden": "true",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "modal-dialog",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "modal-content",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-header",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
+            className: "modal-title",
+            id: "exampleModalLabel",
+            children: "Add a new Course"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn-close",
+            "data-bs-dismiss": "modal",
+            "aria-label": "Close"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          className: "modal-body",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+              htmlFor: "course_full_name",
+              className: "form-label",
+              children: "Short name"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+              type: "text",
+              className: "form-control",
+              id: "course_full_name",
+              name: "course_full_name",
+              value: courseFullName,
+              onChange: function onChange(event) {
+                return setCourseFullName(event.target.value);
+              }
+            })]
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-footer",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-secondary",
+            "data-bs-dismiss": "modal",
+            children: "Close"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-primary",
+            onClick: saveCourse,
+            children: "Add"
+          })]
+        })]
+      })
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CourseModal);
 
 /***/ }),
 
@@ -7234,7 +8733,7 @@ var Form = function Form() {
       className: "col-6",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
         className: "fs-4 text-center",
-        children: "Create a new competency:"
+        children: "Edit competency:"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         className: "form-check",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
@@ -7297,6 +8796,503 @@ var Form = function Form() {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Form);
+
+/***/ }),
+
+/***/ "./resources/js/components/CompetenciesEdit/KnowledgeAccordion.js":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/CompetenciesEdit/KnowledgeAccordion.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _KnowledgeModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./KnowledgeModal */ "./resources/js/components/CompetenciesEdit/KnowledgeModal.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+var ITEMS_PER_PAGE = 8;
+
+var KnowledgeAccordion = function KnowledgeAccordion(_ref) {
+  var aKnowledge = _ref.aKnowledge,
+      setKnowledge = _ref.setKnowledge,
+      selectedKnowledge = _ref.selectedKnowledge,
+      setSelectedKnowledge = _ref.setSelectedKnowledge,
+      changePage = _ref.changePage,
+      addItem = _ref.addItem,
+      removeItem = _ref.removeItem;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      knowledgePage = _useState2[0],
+      setKnowledgePage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      keyword = _useState4[0],
+      setKeyword = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      searchResult = _useState6[0],
+      setSearchResult = _useState6[1]; // Side effects
+
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var prepare = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _data$data;
+
+        var _yield$axios$get, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(keyword.length === 0)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                setSearchResult([]);
+                return _context.abrupt("return");
+
+              case 3:
+                _context.next = 5;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/stateful-api/search", {
+                  params: {
+                    keyword: keyword,
+                    type: "aKnowledge",
+                    limit: ITEMS_PER_PAGE
+                  }
+                });
+
+              case 5:
+                _yield$axios$get = _context.sent;
+                data = _yield$axios$get.data;
+                setSearchResult((_data$data = data === null || data === void 0 ? void 0 : data.data) !== null && _data$data !== void 0 ? _data$data : []);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function prepare() {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    prepare();
+  }, [keyword]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    className: "accordion-item",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
+      className: "accordion-header",
+      id: "knowledgeSelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+        className: "accordion-button",
+        type: "button",
+        "data-bs-toggle": "collapse",
+        "data-bs-target": "#knowledgeSelectionBody",
+        "aria-expanded": "true",
+        "aria-controls": "knowledgeSelectionBody",
+        children: "Add Knowledge"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      id: "knowledgeSelectionBody",
+      className: "accordion-collapse collapse show",
+      "aria-labelledby": "knowledgeSelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "accordion-body",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_KnowledgeModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          setKnowledge: setKnowledge,
+          setSelectedKnowledge: setSelectedKnowledge,
+          addItem: addItem
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "row border",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "col-md-8 border-end",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              id: "knowledgeForm",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                className: "row justify-content-between mt-2",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "col-md-6",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "text",
+                    className: "form-control",
+                    placeholder: "Search for a knowledge",
+                    value: keyword,
+                    onChange: function onChange(event) {
+                      return setKeyword(event.target.value);
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "col-md-4",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-secondary ms-auto d-flex",
+                    "data-bs-toggle": "modal",
+                    "data-bs-target": "#createNewKnowledgeModal",
+                    children: "Add a new knowledge"
+                  })
+                })]
+              }), keyword.length === 0 ? aKnowledge.slice((knowledgePage - 1) * ITEMS_PER_PAGE, (knowledgePage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE).map(function (knowledge) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(knowledge, setKnowledge, setSelectedKnowledge);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                    children: [knowledge === null || knowledge === void 0 ? void 0 : knowledge.code, " -", " ", knowledge === null || knowledge === void 0 ? void 0 : knowledge.short_name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("br", {}), knowledge === null || knowledge === void 0 ? void 0 : knowledge.statement]
+                  })]
+                }, knowledge.id);
+              }) : searchResult.map(function (knowledge) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(knowledge, setKnowledge, setSelectedKnowledge);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+                    dangerouslySetInnerHTML: {
+                      __html: knowledge.highlight
+                    }
+                  })]
+                }, knowledge.id);
+              }), keyword.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("nav", {
+                  "aria-label": "Page navigation",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("ul", {
+                    className: "pagination",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item ".concat(knowledgePage === 1 || aKnowledge.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setKnowledgePage(knowledgePage - 1);
+                        },
+                        children: "Previous"
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item active",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        children: knowledgePage
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+                      className: "page-item ".concat(knowledgePage === Math.ceil(aKnowledge.length / ITEMS_PER_PAGE) || aKnowledge.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setKnowledgePage(knowledgePage + 1);
+                        },
+                        children: "Next"
+                      })
+                    })]
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "col-md-6",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                      className: "input-group mb-3",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                        type: "text",
+                        className: "form-control",
+                        id: "knowledgePageInput"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                        className: "btn btn-outline-secondary",
+                        type: "button",
+                        onClick: function onClick() {
+                          return changePage(document.querySelector("#knowledgePageInput"), setKnowledgePage);
+                        },
+                        children: "Go to page"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "col-md-6 d-flex align-items-center",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                      className: "fw-bold",
+                      children: ["Total:", " ", Math.ceil(aKnowledge.length / ITEMS_PER_PAGE), " ", "pages (", aKnowledge.length, " ", "items)"]
+                    })
+                  })]
+                })]
+              })]
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            id: "selectedKnowledgePanel",
+            className: "col-md-4 overflow-auto",
+            children: selectedKnowledge.map(function (knowledge) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                className: "d-flex align-items-center border-bottom my-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "me-3",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-xs btn-danger",
+                    onClick: function onClick() {
+                      return removeItem(knowledge, setKnowledge, setSelectedKnowledge);
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+                      className: "fas fa-minus-circle"
+                    })
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+                  children: [knowledge === null || knowledge === void 0 ? void 0 : knowledge.code, " - ", knowledge === null || knowledge === void 0 ? void 0 : knowledge.short_name]
+                })]
+              }, knowledge.id);
+            })
+          })]
+        })]
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (KnowledgeAccordion);
+
+/***/ }),
+
+/***/ "./resources/js/components/CompetenciesEdit/KnowledgeModal.js":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/CompetenciesEdit/KnowledgeModal.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+var KnowledgeModal = function KnowledgeModal(_ref) {
+  var addItem = _ref.addItem,
+      setKnowledge = _ref.setKnowledge,
+      setSelectedKnowledge = _ref.setSelectedKnowledge;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      knowledgeShortName = _useState2[0],
+      setKnowledgeShortName = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      knowledgeStatement = _useState4[0],
+      setKnowledgeStatement = _useState4[1]; // Helper methods
+
+
+  var saveKnowledge = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var _yield$axios$post, data;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+
+              if (knowledgeShortName) {
+                _context.next = 3;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 3:
+              _context.next = 5;
+              return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/knowledge", {
+                knowledge_short_name: knowledgeShortName,
+                knowledge_statement: knowledgeStatement
+              });
+
+            case 5:
+              _yield$axios$post = _context.sent;
+              data = _yield$axios$post.data;
+              addItem(data === null || data === void 0 ? void 0 : data.knowledge, setKnowledge, setSelectedKnowledge); // Clear inputs and hide the modal
+
+              setKnowledgeShortName("");
+              setKnowledgeStatement("");
+              bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal.getInstance(document.getElementById("createNewKnowledgeModal")).hide();
+              _context.next = 16;
+              break;
+
+            case 13:
+              _context.prev = 13;
+              _context.t0 = _context["catch"](0);
+              console.error(_context.t0);
+
+            case 16:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[0, 13]]);
+    }));
+
+    return function saveKnowledge() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    className: "modal fade",
+    id: "createNewKnowledgeModal",
+    tabIndex: "-1",
+    "aria-labelledby": "exampleModalLabel",
+    "aria-hidden": "true",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "modal-dialog",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "modal-content",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-header",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
+            className: "modal-title",
+            id: "exampleModalLabel",
+            children: "Add a new Knowledge"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn-close",
+            "data-bs-dismiss": "modal",
+            "aria-label": "Close"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-body",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+              htmlFor: "knowledge_short_name",
+              className: "form-label",
+              children: "Short name"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+              type: "text",
+              className: "form-control",
+              id: "knowledge_short_name",
+              name: "knowledge_short_name",
+              value: knowledgeShortName,
+              onChange: function onChange(event) {
+                return setKnowledgeShortName(event.target.value);
+              }
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+              htmlFor: "knowledge_statement",
+              className: "form-label",
+              children: "Statement"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("textarea", {
+              className: "form-control",
+              id: "knowledge_statement",
+              name: "knowledge_statement",
+              rows: "2",
+              value: knowledgeStatement,
+              onChange: function onChange(event) {
+                return setKnowledgeStatement(event.target.value);
+              }
+            })]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "modal-footer",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-secondary",
+            "data-bs-dismiss": "modal",
+            children: "Close"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-primary",
+            onClick: saveKnowledge,
+            children: "Add"
+          })]
+        })]
+      })
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (KnowledgeModal);
 
 /***/ }),
 
@@ -7818,7 +9814,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Form */ "./resources/js/components/CompetenciesEdit/Form.js");
 /* harmony import */ var _SkillAccordion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SkillAccordion */ "./resources/js/components/CompetenciesEdit/SkillAccordion.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _AttributeAccordion__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./AttributeAccordion */ "./resources/js/components/CompetenciesEdit/AttributeAccordion.js");
+/* harmony import */ var _KnowledgeAccordion__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./KnowledgeAccordion */ "./resources/js/components/CompetenciesEdit/KnowledgeAccordion.js");
+/* harmony import */ var _CourseAccordion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./CourseAccordion */ "./resources/js/components/CompetenciesEdit/CourseAccordion.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -7854,6 +9853,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
+
 var CompetenciesEditView = function CompetenciesEditView() {
   // States
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
@@ -7864,7 +9866,37 @@ var CompetenciesEditView = function CompetenciesEditView() {
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
       _useState4 = _slicedToArray(_useState3, 2),
       selectedSkills = _useState4[0],
-      setSelectedSkills = _useState4[1]; // Helper methods
+      setSelectedSkills = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      attributes = _useState6[0],
+      setAttributes = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState8 = _slicedToArray(_useState7, 2),
+      selectedAttributes = _useState8[0],
+      setSelectedAttributes = _useState8[1];
+
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState10 = _slicedToArray(_useState9, 2),
+      aKnowledge = _useState10[0],
+      setKnowledge = _useState10[1];
+
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState12 = _slicedToArray(_useState11, 2),
+      selectedKnowledge = _useState12[0],
+      setSelectedKnowledge = _useState12[1];
+
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState14 = _slicedToArray(_useState13, 2),
+      courses = _useState14[0],
+      setCourses = _useState14[1];
+
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState16 = _slicedToArray(_useState15, 2),
+      selectedCourses = _useState16[0],
+      setSelectedCourses = _useState16[1]; // Helper methods
 
 
   var setFormHeight = function setFormHeight(mainPanel, selectedItemsPanel) {
@@ -7923,7 +9955,7 @@ var CompetenciesEditView = function CompetenciesEditView() {
 
   var fetchOriginalData = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      var _yield$axios$get, data, _data$skills, _skills, i, j;
+      var _yield$axios$get, dataSkill, _yield$axios$get2, dataAtt, _yield$axios$get3, dataKnow, _yield$axios$get4, dataCourse, _dataSkill$skills, _skills, i, j, _dataAtt$attributes, _attributes, _i2, _j, _dataKnow$aKnowledge, _aKnowledge, _i3, _j2, _dataCourse$courses, _courses, _i4, _j3;
 
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
         while (1) {
@@ -7938,14 +9970,44 @@ var CompetenciesEditView = function CompetenciesEditView() {
 
             case 2:
               _yield$axios$get = _context.sent;
-              data = _yield$axios$get.data;
+              dataSkill = _yield$axios$get.data;
+              _context.next = 6;
+              return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/attributes", {
+                headers: {
+                  Accept: "application/json"
+                }
+              });
 
-              // Data from Blade
+            case 6:
+              _yield$axios$get2 = _context.sent;
+              dataAtt = _yield$axios$get2.data;
+              _context.next = 10;
+              return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/knowledge", {
+                headers: {
+                  Accept: "application/json"
+                }
+              });
+
+            case 10:
+              _yield$axios$get3 = _context.sent;
+              dataKnow = _yield$axios$get3.data;
+              _context.next = 14;
+              return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/courses", {
+                headers: {
+                  Accept: "application/json"
+                }
+              });
+
+            case 14:
+              _yield$axios$get4 = _context.sent;
+              dataCourse = _yield$axios$get4.data;
+
+              // Data from Blade for skill
               if (typeof originalRelatedSkills === "string") {
                 originalRelatedSkills = JSON.parse(originalRelatedSkills.replaceAll("&quot;", '"'));
                 setSelectedSkills(originalRelatedSkills); // Remove the original selected skills from the skills list
 
-                _skills = (_data$skills = data === null || data === void 0 ? void 0 : data.skills) !== null && _data$skills !== void 0 ? _data$skills : [];
+                _skills = (_dataSkill$skills = dataSkill === null || dataSkill === void 0 ? void 0 : dataSkill.skills) !== null && _dataSkill$skills !== void 0 ? _dataSkill$skills : [];
 
                 for (i = 0; i < _skills.length; ++i) {
                   for (j = 0; j < originalRelatedSkills.length; ++j) {
@@ -7956,9 +10018,64 @@ var CompetenciesEditView = function CompetenciesEditView() {
                 }
 
                 setSkills(_skills);
+              } // Data from Blade for attribute
+
+
+              if (typeof originalRelatedAttributes === "string") {
+                originalRelatedAttributes = JSON.parse(originalRelatedAttributes.replaceAll("&quot;", '"'));
+                setSelectedAttributes(originalRelatedAttributes); // Remove the original selected attributes from the attributes list
+
+                _attributes = (_dataAtt$attributes = dataAtt === null || dataAtt === void 0 ? void 0 : dataAtt.attributes) !== null && _dataAtt$attributes !== void 0 ? _dataAtt$attributes : [];
+
+                for (_i2 = 0; _i2 < _attributes.length; ++_i2) {
+                  for (_j = 0; _j < originalRelatedAttributes.length; ++_j) {
+                    if (_attributes[_i2].id === originalRelatedAttributes[_j].id) {
+                      _attributes.splice(_i2, 1);
+                    }
+                  }
+                }
+
+                setAttributes(_attributes);
+              } // Data from Blade for knowledge
+
+
+              if (typeof originalRelatedKnowledge === "string") {
+                originalRelatedKnowledge = JSON.parse(originalRelatedKnowledge.replaceAll("&quot;", '"'));
+                setSelectedKnowledge(originalRelatedKnowledge); // Remove the original selected knowledge from the knowledge list
+
+                _aKnowledge = (_dataKnow$aKnowledge = dataKnow === null || dataKnow === void 0 ? void 0 : dataKnow.aKnowledge) !== null && _dataKnow$aKnowledge !== void 0 ? _dataKnow$aKnowledge : [];
+
+                for (_i3 = 0; _i3 < _aKnowledge.length; ++_i3) {
+                  for (_j2 = 0; _j2 < originalRelatedKnowledge.length; ++_j2) {
+                    if (_aKnowledge[_i3].id === originalRelatedKnowledge[_j2].id) {
+                      _aKnowledge.splice(_i3, 1);
+                    }
+                  }
+                }
+
+                setKnowledge(_aKnowledge);
+              } //console.log(originalRelatedCourses);
+              // Data from Blade for course
+
+
+              if (typeof originalRelatedCourses === "string") {
+                originalRelatedCourses = JSON.parse(originalRelatedCourses.replaceAll("&quot;", '"'));
+                setSelectedCourses(originalRelatedCourses); // Remove the original selected courses from the courses list
+
+                _courses = (_dataCourse$courses = dataCourse === null || dataCourse === void 0 ? void 0 : dataCourse.courses) !== null && _dataCourse$courses !== void 0 ? _dataCourse$courses : [];
+
+                for (_i4 = 0; _i4 < _courses.length; ++_i4) {
+                  for (_j3 = 0; _j3 < originalRelatedCourses.length; ++_j3) {
+                    if (_courses[_i4].id === originalRelatedCourses[_j3].id) {
+                      _courses.splice(_i4, 1);
+                    }
+                  }
+                }
+
+                setCourses(_courses);
               }
 
-            case 5:
+            case 20:
             case "end":
               return _context.stop();
           }
@@ -7973,11 +10090,36 @@ var CompetenciesEditView = function CompetenciesEditView() {
 
   var submitForm = function submitForm(event) {
     event.preventDefault();
-    var form = document.querySelector("#competencyEditForm");
+    var form = document.querySelector("#competencyEditForm"); // get the selected skills to update
+
     selectedSkills.forEach(function (skill) {
       var input = document.createElement("input");
       input.setAttribute("name", "skills[]");
       input.value = skill === null || skill === void 0 ? void 0 : skill.id;
+      input.classList.add("d-none");
+      form.appendChild(input);
+    }); // get the selected attributes to update
+
+    selectedAttributes.forEach(function (attribute) {
+      var input = document.createElement("input");
+      input.setAttribute("name", "attributes[]");
+      input.value = attribute === null || attribute === void 0 ? void 0 : attribute.id;
+      input.classList.add("d-none");
+      form.appendChild(input);
+    }); // get the selected knowledge to update
+
+    selectedKnowledge.forEach(function (knowledge) {
+      var input = document.createElement("input");
+      input.setAttribute("name", "aKnowledge[]");
+      input.value = knowledge === null || knowledge === void 0 ? void 0 : knowledge.id;
+      input.classList.add("d-none");
+      form.appendChild(input);
+    }); // get the selected courses to update
+
+    selectedCourses.forEach(function (course) {
+      var input = document.createElement("input");
+      input.setAttribute("name", "courses[]");
+      input.value = course === null || course === void 0 ? void 0 : course.id;
       input.classList.add("d-none");
       form.appendChild(input);
     });
@@ -7989,13 +10131,13 @@ var CompetenciesEditView = function CompetenciesEditView() {
     fetchOriginalData();
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    setFormHeight(document.querySelector("#skillsForm"), document.querySelector("#selectedSkillsPanel"));
-  }, [skills]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+    setFormHeight(document.querySelector("#skillsForm"), document.querySelector("#selectedSkillsPanel"), document.querySelector("#attributesForm"), document.querySelector("#selectedAttributesPanel"), document.querySelector("#knowledgeForm"), document.querySelector("#selectedKnowledgePanel"), document.querySelector("#coursesForm"), document.querySelector("#selectedCoursesPanel"));
+  }, [skills], [attributes], [aKnowledge], [courses]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
     className: "container py-4",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Form__WEBPACK_IMPORTED_MODULE_5__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Form__WEBPACK_IMPORTED_MODULE_5__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
       className: "accordion my-3",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_SkillAccordion__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_SkillAccordion__WEBPACK_IMPORTED_MODULE_6__["default"], {
         skills: skills,
         setSkills: setSkills,
         selectedSkills: selectedSkills,
@@ -8004,9 +10146,42 @@ var CompetenciesEditView = function CompetenciesEditView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+      className: "accordion my-3",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_AttributeAccordion__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        attributes: attributes,
+        setAttributes: setAttributes,
+        selectedAttributes: selectedAttributes,
+        setSelectedAttributes: setSelectedAttributes,
+        changePage: changePage,
+        addItem: addItem,
+        removeItem: removeItem
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+      className: "accordion my-3",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_KnowledgeAccordion__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        aKnowledge: aKnowledge,
+        setKnowledge: setKnowledge,
+        selectedKnowledge: selectedKnowledge,
+        setSelectedKnowledge: setSelectedKnowledge,
+        changePage: changePage,
+        addItem: addItem,
+        removeItem: removeItem
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+      className: "accordion my-3",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_CourseAccordion__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        courses: courses,
+        setCourses: setCourses,
+        selectedCourses: selectedCourses,
+        setSelectedCourses: setSelectedCourses,
+        changePage: changePage,
+        addItem: addItem,
+        removeItem: removeItem
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
         type: "button",
         className: "btn btn-primary",
         onClick: submitForm,
@@ -8019,7 +10194,39 @@ var CompetenciesEditView = function CompetenciesEditView() {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompetenciesEditView);
 
 if (document.getElementById("competencies-edit-view")) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(CompetenciesEditView, {}), document.getElementById("competencies-edit-view"));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(CompetenciesEditView, {}), document.getElementById("competencies-edit-view"));
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/CourseCreate/index.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/CourseCreate/index.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var CoursesCreateView = function CoursesCreateView() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    children: "this is courses create view"
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CoursesCreateView);
+
+if (document.getElementById("courses-create-view")) {
+  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(CoursesCreateView, {}), document.getElementById("courses-create-view"));
 }
 
 /***/ }),

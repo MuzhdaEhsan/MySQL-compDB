@@ -45,7 +45,27 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'course_full_name' => ['string', 'required'],
+        ]);
+
+        $latestRecordCodeNumber = 0;
+
+        // Get the latest record ordered by id to extract number from the code
+        $latestRecord = Course::orderBy('id', 'desc')->first();
+        if ($latestRecord) {
+            $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
+        }
+
+        // Create a new course record
+        $course = Course::create([
+            'code' => 'S' . sprintf('%04d', $latestRecordCodeNumber + 1),
+            'full_name' => $request->input('course_full_name')
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['course' => $course]);
+        }
     }
 
     /**
