@@ -4,17 +4,16 @@
     <div class="container py-2">
         {{-- Results per page selector --}}
         <div class="row justify-content-center">
-        <div class="col-5 d-flex align-items-center">
+            <div class="col-5 d-flex align-items-center">
                 <div>
-                    <a href="/skills/create" class="btn btn-primary btn-sm rounded-pill">
+                    <a href="/users/create" class="btn btn-primary btn-sm rounded-pill">
                         <i class="fa fa-plus"></i> Create
                     </a>
                 </div>
                 @if (auth()->user()->isAdmin())
                     <div class="ms-3">
-                        <a href="/skills/trashed" class="btn btn-dark btn-sm rounded-pill">
-                            <i class="fa fa-trash"></i> Trashed skills
-                            
+                        <a href="/competencies/trashed" class="btn btn-dark btn-sm rounded-pill">
+                            <i class="fa fa-trash"></i> Trashed Users
                         </a>
                     </div>
                 @endif
@@ -34,18 +33,18 @@
                     <p class="mb-0 me-1">Sort by: </p>
                     <select id="sort-select">
                         <option value="default">Default</option>
-                        <option value="short_name.asc"
-                            {{ request()->query('orderBy') === 'short_name' && request()->query('orderByType') === 'asc' ? 'selected' : '' }}>
-                            Short name (ASC)</option>
-                        <option value="short_name.desc"
-                            {{ request()->query('orderBy') === 'short_name' && request()->query('orderByType') === 'desc' ? 'selected' : '' }}>
-                            Short name (DESC)</option>
-                        <option value="statement.asc"
-                            {{ request()->query('orderBy') === 'statement' && request()->query('orderByType') === 'asc' ? 'selected' : '' }}>
-                            Statement (ASC)</option>
-                        <option value="statement.desc"
-                            {{ request()->query('orderBy') === 'statement' && request()->query('orderByType') === 'desc' ? 'selected' : '' }}>
-                            Statement (DESC)</option>
+                        <option value="name.asc"
+                            {{ request()->query('orderBy') === 'name' && request()->query('orderByType') === 'asc' ? 'selected' : '' }}>
+                            Name (ASC)</option>
+                        <option value="name.desc"
+                            {{ request()->query('orderBy') === 'name' && request()->query('orderByType') === 'desc' ? 'selected' : '' }}>
+                            Name (DESC)</option>
+                        <option value="email.asc"
+                            {{ request()->query('orderBy') === 'email' && request()->query('orderByType') === 'asc' ? 'selected' : '' }}>
+                            Email (ASC)</option>
+                        <option value="email.desc"
+                            {{ request()->query('orderBy') === 'email' && request()->query('orderByType') === 'desc' ? 'selected' : '' }}>
+                            Email (DESC)</option>
                     </select>
                 </div>
             </div>
@@ -57,47 +56,46 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped caption-top">
                         {{-- Table caption --}}
-                        <caption>List of skills</caption>
+                        <caption>List of users</caption>
 
                         {{-- Table header --}}
                         <thead>
                             <tr>
-                                <th scope="col" width="10%">Code</th>
-                                <th scope="col" width="25%">Short Name</th>
-                                <th scope="col" width="35%">Statement</th>
+                                <th scope="col" width="10%">Name</th>
+                                <th scope="col" width="25%">Email</th>
+                                <th scope="col" width="35%">Role</th>
                                 <th scope="col" width="30%">Actions</th>
                             </tr>
                         </thead>
 
                         {{-- Table body --}}
                         <tbody>
-                            @foreach ($skills as $skill)
+                            @foreach ($users as $user)
                                 <tr>
-                                    <td>{{ $skill->code }}</td>
-                                    <td>{{ $skill->short_name }}</td>
-                                    <td>{{ $skill->statement }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>@if ($user->is_admin == 1)
+                                         Admin
+                                         @else Staff
+                                         @endif
+                                        </td>
                                     <td>
                                         <ul class="list-inline m-0">
+                                            
                                             <li class="list-inline-item">
-                                                <a href="/skills/{{ $skill->id }}"
-                                                    class="btn btn-primary btn-sm rounded-pill">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a href="/skills/{{ $skill->id }}/edit"
+                                                <a href="/users/{{ $user->id }}/edit"
                                                     class="btn btn-success btn-sm rounded-pill">
                                                     <i class="fa fa-edit"></i> Edit
                                                 </a>
                                             </li>
                                             <li class="list-inline-item">
-                                                <a href="/skills/{{ $skill->id }}"
-                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $skill->id }}').submit();"
+                                                <a href="/users/{{ $user->id }}"
+                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $user->id }}').submit();"
                                                     class="btn btn-danger btn-sm rounded-pill">
                                                     <i class="fa fa-trash"></i> Delete
                                                 </a>
-                                                <form id="delete-form-{{ $skill->id }}"
-                                                    action="/skills/{{ $skill->id }}" method="POST"
+                                                <form id="delete-form-{{ $user->id }}"
+                                                    action="/users/{{ $user->id }}" method="POST"
                                                     class="d-none">
                                                     @csrf
                                                     @method('DELETE')
@@ -112,7 +110,7 @@
                 </div>
 
                 {{-- Automatically generated paginator by Laravel --}}
-                {{ $skills->onEachSide(1)->links() }}
+                {{ $users->onEachSide(1)->links() }}
             </div>
         </div>
     </div>

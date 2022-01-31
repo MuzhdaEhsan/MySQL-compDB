@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Skill;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class SkillController extends Controller
@@ -34,7 +35,7 @@ class SkillController extends Controller
      */
     public function create()
     {
-        //
+        return view('skills.create');
     }
 
     /**
@@ -64,9 +65,30 @@ class SkillController extends Controller
             'statement' => $request->input('skill_statement')
         ]);
 
+
+        // Log this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::CREATE,
+            'table_name' => Log::TABLE_SKILLS,
+            'record_id' => $skill->id,
+            'new_state' => $skill->toJson()
+        ]);
+
+        // Add related skills using ATTACH (add new items)
+        $skill->competencies()->attach($request->input('competencies') ?? []);
+
         if ($request->expectsJson()) {
             return response()->json(['skill' => $skill]);
         }
+
+        return redirect()
+        ->action(
+            [SkillController::class, 'index']
+        )->with(
+            'status',
+            "Successfully create a new skill $skill->code - $skill->short_name"
+        );
     }
 
     /**
@@ -89,7 +111,7 @@ class SkillController extends Controller
      */
     public function edit(Skill $skill)
     {
-        //
+        return view('skills.edit', compact('skill'));
     }
 
     /**
@@ -101,7 +123,44 @@ class SkillController extends Controller
      */
     public function update(Request $request, Skill $skill)
     {
-        //
+        $request->validate([
+            'skill_short_name' => ['string', 'required'],
+        ]);
+
+        $originalSkill = $skill->toJson();
+
+        // Create a new skill record
+        $skill->update([
+            'code' => 'S' . substr($skill->code, 1),
+            'short_name' => $request->input('skill_short_name'),
+            'statement' => $request->input('skill_statement')
+        ]);
+
+        // Log this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::UPDATE,
+            'table_name' => Log::TABLE_SKILLS,
+            'record_id' => $skill->id,
+            'old_state' => $originalSkill,
+            'new_state' => $skill->toJson()
+        ]);
+
+        // Add related competencies using SYNC (synchronize the list)
+        $skill->competencies()->sync($request->input('competencies') ?? []);
+       
+
+        if ($request->expectsJson()) {
+            return response()->json(['skill' => $skill]);
+        }
+
+        return redirect()
+            ->action(
+                [SkillController::class, 'index']
+            )->with(
+                'status',
+                "Successfully updated skill $skill->code - $skill->short_name"
+            );
     }
 
     /**

@@ -13,9 +13,18 @@ class LogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $logs = Log::all();
+        //$logs = Log::all();
+        //return view('logs.index', compact('logs'));
+
+
+        $resultsPerPage = $request->query('resultsPerPage') ?? 10;
+        $orderBy = $request->query('orderBy') ?? 'id';
+        $orderByType = $request->query('orderByType') ?? 'asc';
+
+        $logs = Log::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
+
         return view('logs.index', compact('logs'));
     }
 
@@ -48,7 +57,7 @@ class LogController extends Controller
      */
     public function show(Log $log)
     {
-        //
+        return view('logs.show', compact('log'));
     }
 
     /**
@@ -82,6 +91,30 @@ class LogController extends Controller
      */
     public function destroy(Log $log)
     {
-        //
+        // Get the code and short name of this record before deleting
+        $action = $log->action;
+        $tableName = $log->table_name;
+
+        $log->delete();
+       
+
+        // Redirect to index page with flash message
+        return redirect()
+            ->action(
+                [LogController::class, 'index']
+            )->with(
+                'status',
+                "Successfully deleted Log of $action - $tableName"
+            );
+    }
+
+    /**
+     * Parent User.
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

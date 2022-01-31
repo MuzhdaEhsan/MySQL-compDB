@@ -19,3 +19,5 @@ require("./components/AttributeCreate");
 require("./components/KnowledgeCreate");
 require("./components/CourseCreate");
 require("./components/AttributeEdit");
+require("./components/UserCreate");
+require("./components/SkillEdit");

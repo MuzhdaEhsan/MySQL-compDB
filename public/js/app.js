@@ -5275,6 +5275,10 @@ __webpack_require__(/*! ./components/CourseCreate */ "./resources/js/components/
 
 __webpack_require__(/*! ./components/AttributeEdit */ "./resources/js/components/AttributeEdit/index.js");
 
+__webpack_require__(/*! ./components/UserCreate */ "./resources/js/components/UserCreate/index.js");
+
+__webpack_require__(/*! ./components/SkillEdit */ "./resources/js/components/SkillEdit/index.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -11377,6 +11381,937 @@ if (document.getElementById("knowledge-create-view")) {
 
 /***/ }),
 
+/***/ "./resources/js/components/SkillEdit/CompetencyAccordion.js":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/SkillEdit/CompetencyAccordion.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+var ITEMS_PER_PAGE = 8;
+
+var CompetencyAccordion = function CompetencyAccordion(_ref) {
+  var competencies = _ref.competencies,
+      setCompetencies = _ref.setCompetencies,
+      selectedCompetencies = _ref.selectedCompetencies,
+      setSelectedCompetencies = _ref.setSelectedCompetencies,
+      changePage = _ref.changePage,
+      addItem = _ref.addItem,
+      removeItem = _ref.removeItem;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      competencyPage = _useState2[0],
+      setCompetencyPage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      keyword = _useState4[0],
+      setKeyword = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      searchResult = _useState6[0],
+      setSearchResult = _useState6[1]; // Side effects
+
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var prepare = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _data$data;
+
+        var _yield$axios$get, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(keyword.length === 0)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                setSearchResult([]);
+                return _context.abrupt("return");
+
+              case 3:
+                _context.next = 5;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/stateful-api/search", {
+                  params: {
+                    keyword: keyword,
+                    type: "competencies",
+                    limit: ITEMS_PER_PAGE
+                  }
+                });
+
+              case 5:
+                _yield$axios$get = _context.sent;
+                data = _yield$axios$get.data;
+                setSearchResult((_data$data = data === null || data === void 0 ? void 0 : data.data) !== null && _data$data !== void 0 ? _data$data : []);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function prepare() {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    prepare();
+  }, [keyword]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    className: "accordion-item",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
+      className: "accordion-header",
+      id: "competencySelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        className: "accordion-button",
+        type: "button",
+        "data-bs-toggle": "collapse",
+        "data-bs-target": "#competencySelectionBody",
+        "aria-expanded": "true",
+        "aria-controls": "competencySelectionBody",
+        children: "Add Competencies"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      id: "competencySelectionBody",
+      className: "accordion-collapse collapse show",
+      "aria-labelledby": "competencySelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        className: "accordion-body",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "row border",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            className: "col-md-8 border-end",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              id: "competenciesForm",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                className: "row justify-content-between mt-2",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  className: "col-md-6",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                    type: "text",
+                    className: "form-control",
+                    placeholder: "Search for a competency",
+                    value: keyword,
+                    onChange: function onChange(event) {
+                      return setKeyword(event.target.value);
+                    }
+                  })
+                })
+              }), keyword.length === 0 ? competencies.slice((competencyPage - 1) * ITEMS_PER_PAGE, (competencyPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE).map(function (competency) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(competency, setCompetencies, setSelectedCompetencies);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+                    children: [competency === null || competency === void 0 ? void 0 : competency.code, " -", " ", competency === null || competency === void 0 ? void 0 : competency.short_name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), competency === null || competency === void 0 ? void 0 : competency.statement]
+                  })]
+                }, competency.id);
+              }) : searchResult.map(function (competency) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(competency, setCompetencies, setSelectedCompetencies);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+                    dangerouslySetInnerHTML: {
+                      __html: competency.highlight
+                    }
+                  })]
+                }, competency.id);
+              }), keyword.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("nav", {
+                  "aria-label": "Page navigation",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("ul", {
+                    className: "pagination",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
+                      className: "page-item ".concat(competencyPage === 1 || competencies.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setCompetencyPage(competencyPage - 1);
+                        },
+                        children: "Previous"
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
+                      className: "page-item active",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+                        className: "page-link",
+                        children: competencyPage
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
+                      className: "page-item ".concat(competencyPage === Math.ceil(competencies.length / ITEMS_PER_PAGE) || competencies.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setCompetencyPage(competencyPage + 1);
+                        },
+                        children: "Next"
+                      })
+                    })]
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: "col-md-6",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                      className: "input-group mb-3",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                        type: "text",
+                        className: "form-control",
+                        id: "competenciesPageInput"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                        className: "btn btn-outline-secondary",
+                        type: "button",
+                        onClick: function onClick() {
+                          return changePage(document.querySelector("#competenciesPageInput"), setCompetencyPage);
+                        },
+                        children: "Go to page"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: "col-md-6 d-flex align-items-center",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+                      className: "fw-bold",
+                      children: ["Total:", " ", Math.ceil(competencies.length / ITEMS_PER_PAGE), " ", "pages (", competencies.length, " ", "items)"]
+                    })
+                  })]
+                })]
+              })]
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            id: "selectedCompetenciesPanel",
+            className: "col-md-4 overflow-auto",
+            children: selectedCompetencies.map(function (competency) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                className: "d-flex align-items-center border-bottom my-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  className: "me-3",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-xs btn-danger",
+                    onClick: function onClick() {
+                      return removeItem(competency, setCompetencies, setSelectedCompetencies);
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                      className: "fas fa-minus-circle"
+                    })
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+                  children: [competency === null || competency === void 0 ? void 0 : competency.code, " - ", competency === null || competency === void 0 ? void 0 : competency.short_name]
+                })]
+              }, competency.id);
+            })
+          })]
+        })
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompetencyAccordion);
+
+/***/ }),
+
+/***/ "./resources/js/components/SkillEdit/Form.js":
+/*!***************************************************!*\
+  !*** ./resources/js/components/SkillEdit/Form.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var Form = function Form() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    className: "row justify-content-center",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "col-6",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+        className: "fs-4 text-center",
+        children: "Edit skill:"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "skill_short_name",
+          className: "form-label",
+          children: "Short name"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          type: "text",
+          className: "form-control",
+          id: "skill_short_name",
+          name: "skill_short_name",
+          placeholder: "Problem-solving",
+          defaultValue: originalShortName
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "skill_statement",
+          className: "form-label",
+          children: "Statement"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("textarea", {
+          className: "form-control",
+          id: "skill_statement",
+          name: "skill_statement",
+          rows: "2",
+          placeholder: "Resolve a work-related problem to optimally meet the needs of the business",
+          defaultValue: originalStatement
+        })]
+      })]
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Form);
+
+/***/ }),
+
+/***/ "./resources/js/components/SkillEdit/index.js":
+/*!****************************************************!*\
+  !*** ./resources/js/components/SkillEdit/index.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Form */ "./resources/js/components/SkillEdit/Form.js");
+/* harmony import */ var _CompetencyAccordion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./CompetencyAccordion */ "./resources/js/components/SkillEdit/CompetencyAccordion.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+var SkillEditView = function SkillEditView() {
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      competencies = _useState2[0],
+      setCompetencies = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      selectedCompetencies = _useState4[0],
+      setSelectedCompetencies = _useState4[1]; // Helper methods
+
+
+  var setFormHeight = function setFormHeight(mainPanel, selectedItemsPanel) {
+    // We set the height of the selected items panel to be equal to the height
+    // of the main form because if there are too many selected items, we don't
+    // want to display a long list of it while the main form looks empty
+    // We also set the minimum height to be 300 px to avoid the form from being too small
+    var minHeight = mainPanel.clientHeight >= 300 ? mainPanel.clientHeight : 300;
+    selectedItemsPanel.setAttribute("style", "height: ".concat(minHeight, "px"));
+  };
+
+  var changePage = function changePage(input, setPage) {
+    if ((0,lodash__WEBPACK_IMPORTED_MODULE_4__.isNumber)(+input.value)) {
+      setPage(+input.value);
+    }
+  };
+
+  var addItem = function addItem(toBeAddedItem, setItems, setSelectedItems) {
+    // When adding new item, we remove that item from the item list
+    setItems(function (items) {
+      var index = items.findIndex(function (item) {
+        return item.id === toBeAddedItem.id;
+      }); // In case we add a new item by creating a new one using modal
+      // The index would return -1 because the object isn't in the current items list
+
+      if (index === -1) return items;
+      items.splice(index, 1); // Return a new array to trigger rerendering
+
+      return _toConsumableArray(items);
+    }); // Add that item to the selected items list
+
+    setSelectedItems(function (selectedItems) {
+      selectedItems.push(toBeAddedItem); // Return a new array to trigger rerendering
+
+      return _toConsumableArray(selectedItems);
+    });
+  };
+
+  var removeItem = function removeItem(toBeRemovedItem, setItems, setSelectedItems) {
+    // When removing an item, we remove that item from the selected items list
+    setSelectedItems(function (selectedItems) {
+      var index = selectedItems.findIndex(function (item) {
+        return item.id === toBeRemovedItem.id;
+      });
+      selectedItems.splice(index, 1); // Return a new array to trigger rerendering
+
+      return _toConsumableArray(selectedItems);
+    }); // Add that item to the items list
+
+    setItems(function (items) {
+      items.push(toBeRemovedItem); // Return a new array to trigger rerendering
+
+      return _toConsumableArray(items);
+    });
+  };
+
+  var fetchOriginalData = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var _yield$axios$get, dataCom, _dataCom$competencies, _competencies, i, j;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/competencies", {
+                headers: {
+                  Accept: "application/json"
+                }
+              });
+
+            case 2:
+              _yield$axios$get = _context.sent;
+              dataCom = _yield$axios$get.data;
+
+              // Data from Blade for competency
+              if (typeof originalRelatedCompetencies === "string") {
+                originalRelatedCompetencies = JSON.parse(originalRelatedCompetencies.replaceAll("&quot;", '"'));
+                setSelectedCompetencies(originalRelatedCompetencies); // Remove the original selected competencies from the competencies list
+
+                _competencies = (_dataCom$competencies = dataCom === null || dataCom === void 0 ? void 0 : dataCom.competencies) !== null && _dataCom$competencies !== void 0 ? _dataCom$competencies : [];
+
+                for (i = 0; i < _competencies.length; ++i) {
+                  for (j = 0; j < originalRelatedCompetencies.length; ++j) {
+                    if (_competencies[i].id === originalRelatedCompetencies[j].id) {
+                      _competencies.splice(i, 1);
+                    }
+                  }
+                }
+
+                setCompetencies(_competencies);
+              } //console.log(originalRelatedCourses);
+
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function fetchOriginalData() {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  var submitForm = function submitForm(event) {
+    event.preventDefault();
+    var form = document.querySelector("#skillEditForm"); // get the selected competencies to update
+
+    selectedCompetencies.forEach(function (competency) {
+      var input = document.createElement("input");
+      input.setAttribute("name", "competencies[]");
+      input.value = competency === null || competency === void 0 ? void 0 : competency.id;
+      input.classList.add("d-none");
+      form.appendChild(input);
+    });
+    form.submit();
+  }; // Side effects
+
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    fetchOriginalData();
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    setFormHeight(document.querySelector("#competenciesForm"), document.querySelector("#selectedCompetenciesPanel"));
+  }, [competencies]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+    className: "container py-4",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Form__WEBPACK_IMPORTED_MODULE_5__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      className: "accordion my-3",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_CompetencyAccordion__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        competencies: competencies,
+        setCompetencies: setCompetencies,
+        selectedCompetencies: selectedCompetencies,
+        setSelectedCompetencies: setSelectedCompetencies,
+        changePage: changePage,
+        addItem: addItem,
+        removeItem: removeItem
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      className: "d-flex justify-content-center",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+        type: "button",
+        className: "btn btn-primary",
+        onClick: submitForm,
+        children: "Edit"
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SkillEditView);
+
+if (document.getElementById("skills-edit-view")) {
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(SkillEditView, {}), document.getElementById("skills-edit-view"));
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/SkillsCreate/CompetencyAccordion.js":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/SkillsCreate/CompetencyAccordion.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+var ITEMS_PER_PAGE = 8;
+
+var CompetencyAccordion = function CompetencyAccordion(_ref) {
+  var competencies = _ref.competencies,
+      setCompetencies = _ref.setCompetencies,
+      selectedCompetencies = _ref.selectedCompetencies,
+      setSelectedCompetencies = _ref.setSelectedCompetencies,
+      changePage = _ref.changePage,
+      addItem = _ref.addItem,
+      removeItem = _ref.removeItem;
+
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      competencyPage = _useState2[0],
+      setCompetencyPage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      keyword = _useState4[0],
+      setKeyword = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      searchResult = _useState6[0],
+      setSearchResult = _useState6[1]; // Side effects
+
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var prepare = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _data$data;
+
+        var _yield$axios$get, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(keyword.length === 0)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                setSearchResult([]);
+                return _context.abrupt("return");
+
+              case 3:
+                _context.next = 5;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/stateful-api/search", {
+                  params: {
+                    keyword: keyword,
+                    type: "competencies",
+                    limit: ITEMS_PER_PAGE
+                  }
+                });
+
+              case 5:
+                _yield$axios$get = _context.sent;
+                data = _yield$axios$get.data;
+                setSearchResult((_data$data = data === null || data === void 0 ? void 0 : data.data) !== null && _data$data !== void 0 ? _data$data : []);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function prepare() {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    prepare();
+  }, [keyword]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    className: "accordion-item",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
+      className: "accordion-header",
+      id: "competencySelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        className: "accordion-button",
+        type: "button",
+        "data-bs-toggle": "collapse",
+        "data-bs-target": "#competencySelectionBody",
+        "aria-expanded": "true",
+        "aria-controls": "competencySelectionBody",
+        children: "Add Competencies"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      id: "competencySelectionBody",
+      className: "accordion-collapse collapse show",
+      "aria-labelledby": "competencySelectionHeader",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        className: "accordion-body",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "row border",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            className: "col-md-8 border-end",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              id: "competenciesForm",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                className: "row justify-content-between mt-2",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  className: "col-md-6",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                    type: "text",
+                    className: "form-control",
+                    placeholder: "Search for a competency",
+                    value: keyword,
+                    onChange: function onChange(event) {
+                      return setKeyword(event.target.value);
+                    }
+                  })
+                })
+              }), keyword.length === 0 ? competencies.slice((competencyPage - 1) * ITEMS_PER_PAGE, (competencyPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE).map(function (competency) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(competency, setCompetencies, setSelectedCompetencies);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+                    children: [competency === null || competency === void 0 ? void 0 : competency.code, " -", " ", competency === null || competency === void 0 ? void 0 : competency.short_name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), competency === null || competency === void 0 ? void 0 : competency.statement]
+                  })]
+                }, competency.id);
+              }) : searchResult.map(function (competency) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "d-flex align-items-center border-bottom my-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: "me-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-xs btn-success",
+                      onClick: function onClick() {
+                        return addItem(competency, setCompetencies, setSelectedCompetencies);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                        className: "fas fa-plus-circle"
+                      })
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+                    dangerouslySetInnerHTML: {
+                      __html: competency.highlight
+                    }
+                  })]
+                }, competency.id);
+              }), keyword.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("nav", {
+                  "aria-label": "Page navigation",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("ul", {
+                    className: "pagination",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
+                      className: "page-item ".concat(competencyPage === 1 || competencies.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setCompetencyPage(competencyPage - 1);
+                        },
+                        children: "Previous"
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
+                      className: "page-item active",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+                        className: "page-link",
+                        children: competencyPage
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
+                      className: "page-item ".concat(competencyPage === Math.ceil(competencies.length / ITEMS_PER_PAGE) || competencies.length === 0 ? "disabled" : ""),
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+                        className: "page-link",
+                        onClick: function onClick() {
+                          return setCompetencyPage(competencyPage + 1);
+                        },
+                        children: "Next"
+                      })
+                    })]
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: "col-md-6",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                      className: "input-group mb-3",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                        type: "text",
+                        className: "form-control",
+                        id: "competenciesPageInput"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                        className: "btn btn-outline-secondary",
+                        type: "button",
+                        onClick: function onClick() {
+                          return changePage(document.querySelector("#competenciesPageInput"), setCompetencyPage);
+                        },
+                        children: "Go to page"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: "col-md-6 d-flex align-items-center",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+                      className: "fw-bold",
+                      children: ["Total:", " ", Math.ceil(competencies.length / ITEMS_PER_PAGE), " ", "pages (", competencies.length, " ", "items)"]
+                    })
+                  })]
+                })]
+              })]
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            id: "selectedCompetenciesPanel",
+            className: "col-md-4 overflow-auto",
+            children: selectedCompetencies.map(function (competency) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                className: "d-flex align-items-center border-bottom my-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  className: "me-3",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    type: "button",
+                    className: "btn btn-xs btn-danger",
+                    onClick: function onClick() {
+                      return removeItem(competency, setCompetencies, setSelectedCompetencies);
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                      className: "fas fa-minus-circle"
+                    })
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+                  children: [competency === null || competency === void 0 ? void 0 : competency.code, " - ", competency === null || competency === void 0 ? void 0 : competency.short_name]
+                })]
+              }, competency.id);
+            })
+          })]
+        })
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompetencyAccordion);
+
+/***/ }),
+
+/***/ "./resources/js/components/SkillsCreate/Form.js":
+/*!******************************************************!*\
+  !*** ./resources/js/components/SkillsCreate/Form.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var Form = function Form() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    className: "row justify-content-center",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "col-6",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+        className: "fs-4 text-center",
+        children: "Create a new skill:"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "skill_short_name",
+          className: "form-label",
+          children: "Short name"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          type: "text",
+          className: "form-control",
+          id: "skill_short_name",
+          name: "skill_short_name",
+          placeholder: "Problem-solving"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "skill_statement",
+          className: "form-label",
+          children: "Statement"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("textarea", {
+          className: "form-control",
+          id: "skill_statement",
+          name: "skill_statement",
+          rows: "2",
+          placeholder: "Resolve a work-related problem to optimally meet the needs of the business"
+        })]
+      })]
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Form);
+
+/***/ }),
+
 /***/ "./resources/js/components/SkillsCreate/index.js":
 /*!*******************************************************!*\
   !*** ./resources/js/components/SkillsCreate/index.js ***!
@@ -11388,23 +12323,322 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Form */ "./resources/js/components/SkillsCreate/Form.js");
+/* harmony import */ var _CompetencyAccordion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./CompetencyAccordion */ "./resources/js/components/SkillsCreate/CompetencyAccordion.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
 
 
 
 
 var SkillsCreateView = function SkillsCreateView() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    children: "this is skills create view"
+  // States
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      competencies = _useState2[0],
+      setCompetencies = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      selectedCompetencies = _useState4[0],
+      setSelectedCompetencies = _useState4[1]; // Helper methods
+
+
+  var setFormHeight = function setFormHeight(mainPanel, selectedItemsPanel) {
+    // We set the height of the selected items panel to be equal to the height
+    // of the main form because if there are too many selected items, we don't
+    // want to display a long list of it while the main form looks empty
+    // We also set the minimum height to be 300 px to avoid the form from being too small
+    var minHeight = mainPanel.clientHeight >= 300 ? mainPanel.clientHeight : 300;
+    selectedItemsPanel.setAttribute("style", "height: ".concat(minHeight, "px"));
+  };
+
+  var changePage = function changePage(input, setPage) {
+    if ((0,lodash__WEBPACK_IMPORTED_MODULE_4__.isNumber)(+input.value)) {
+      setPage(+input.value);
+    }
+  };
+
+  var addItem = function addItem(toBeAddedItem, setItems, setSelectedItems) {
+    // When adding new item, we remove that item from the item list
+    setItems(function (items) {
+      var index = items.findIndex(function (item) {
+        return item.id === toBeAddedItem.id;
+      }); // In case we add a new item by creating a new one using modal
+      // The index would return -1 because the object isn't in the current items list
+
+      if (index === -1) return items;
+      items.splice(index, 1); // Return a new array to trigger rerendering
+
+      return _toConsumableArray(items);
+    }); // Add that item to the selected items list
+
+    setSelectedItems(function (selectedItems) {
+      selectedItems.push(toBeAddedItem); // Return a new array to trigger rerendering
+
+      return _toConsumableArray(selectedItems);
+    });
+  };
+
+  var removeItem = function removeItem(toBeRemovedItem, setItems, setSelectedItems) {
+    // When removing an item, we remove that item from the selected items list
+    setSelectedItems(function (selectedItems) {
+      var index = selectedItems.findIndex(function (item) {
+        return item.id === toBeRemovedItem.id;
+      });
+      selectedItems.splice(index, 1); // Return a new array to trigger rerendering
+
+      return _toConsumableArray(selectedItems);
+    }); // Add that item to the items list
+
+    setItems(function (items) {
+      items.push(toBeRemovedItem); // Return a new array to trigger rerendering
+
+      return _toConsumableArray(items);
+    });
+  };
+
+  var fetchOriginalData = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var _dataCom$competencies;
+
+      var _yield$axios$get, dataCom;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/competencies", {
+                headers: {
+                  Accept: "application/json"
+                }
+              });
+
+            case 2:
+              _yield$axios$get = _context.sent;
+              dataCom = _yield$axios$get.data;
+              setCompetencies((_dataCom$competencies = dataCom === null || dataCom === void 0 ? void 0 : dataCom.competencies) !== null && _dataCom$competencies !== void 0 ? _dataCom$competencies : []);
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function fetchOriginalData() {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  var submitForm = function submitForm(event) {
+    event.preventDefault();
+    var form = document.querySelector("#skillCreateForm"); // get the selected competencies to add 
+
+    selectedCompetencies.forEach(function (competency) {
+      var input = document.createElement("input");
+      input.setAttribute("name", "competencies[]");
+      input.value = competency === null || competency === void 0 ? void 0 : competency.id;
+      input.classList.add("d-none");
+      form.appendChild(input);
+    });
+    form.submit();
+  }; // Side effects
+
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    fetchOriginalData();
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    setFormHeight(document.querySelector("#competenciesForm"), document.querySelector("#selectedCompetenciesPanel"));
+  }, [competencies]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+    className: "container py-4",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Form__WEBPACK_IMPORTED_MODULE_5__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      className: "accordion my-3",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_CompetencyAccordion__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        competencies: competencies,
+        setCompetencies: setCompetencies,
+        selectedCompetencies: selectedCompetencies,
+        setSelectedCompetencies: setSelectedCompetencies,
+        changePage: changePage,
+        addItem: addItem,
+        removeItem: removeItem
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      className: "d-flex justify-content-center",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+        type: "button",
+        className: "btn btn-primary",
+        onClick: submitForm,
+        children: "Create"
+      })
+    })]
   });
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SkillsCreateView);
 
 if (document.getElementById("skills-create-view")) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(SkillsCreateView, {}), document.getElementById("skills-create-view"));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(SkillsCreateView, {}), document.getElementById("skills-create-view"));
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/UserCreate/Form.js":
+/*!****************************************************!*\
+  !*** ./resources/js/components/UserCreate/Form.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var Form = function Form() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    className: "row justify-content-center",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "col-6",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+        className: "fs-4 text-center",
+        children: "Create a new user:"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "user_name",
+          className: "form-label",
+          children: "Short name"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          type: "text",
+          className: "form-control",
+          id: "user_name",
+          name: "user_name",
+          placeholder: "Problem-solving"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "attribute_statement",
+          className: "form-label",
+          children: "Statement"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("textarea", {
+          className: "form-control",
+          id: "attribute_statement",
+          name: "attribute_statement",
+          rows: "2",
+          placeholder: "Resolve a work-related problem to optimally meet the needs of the business"
+        })]
+      })]
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Form);
+
+/***/ }),
+
+/***/ "./resources/js/components/UserCreate/index.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/UserCreate/index.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Form */ "./resources/js/components/UserCreate/Form.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+
+
+
+var UsersCreateView = function UsersCreateView() {
+  // States
+  // Helper methods
+  var submitForm = function submitForm(event) {
+    event.preventDefault();
+    var form = document.querySelector("#userCreateForm");
+    form.submit();
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+    className: "container py-4",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Form__WEBPACK_IMPORTED_MODULE_4__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      className: "d-flex justify-content-center",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+        type: "button",
+        className: "btn btn-primary",
+        onClick: submitForm,
+        children: "Create"
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UsersCreateView);
+
+if (document.getElementById("users-create-view")) {
+  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(UsersCreateView, {}), document.getElementById("users-create-view"));
 }
 
 /***/ }),

@@ -12,10 +12,18 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request,)
     {
+        $resultsPerPage = $request->query('resultsPerPage') ?? 10;
+        $orderBy = $request->query('orderBy') ?? 'id';
+        $orderByType = $request->query('orderByType') ?? 'asc';
+
+        $users = User::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
+
+        return view('auth.index', compact('users'));
     }
 
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -23,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('auth.create');
     }
 
     /**
