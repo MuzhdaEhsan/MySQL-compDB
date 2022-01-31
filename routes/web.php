@@ -47,6 +47,18 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('{id}/force-delete', [AttributeController::class, 'forceDelete']);
             Route::post('{id}/restore', [AttributeController::class, 'restore']);
         });
+
+        Route::prefix('skills')->group(function () {
+            Route::get('trashed', [SkillController::class, 'trashed']);
+            Route::delete('{id}/force-delete', [SkillController::class, 'forceDelete']);
+            Route::post('{id}/restore', [SkillController::class, 'restore']);
+        });
+
+        Route::prefix('knowledge')->group(function () {
+            Route::get('trashed', [KnowledgeController::class, 'trashed']);
+            Route::delete('{id}/force-delete', [KnowledgeController::class, 'forceDelete']);
+            Route::post('{id}/restore', [KnowledgeController::class, 'restore']);
+        });
     });
 
     // TODO: Modify index pages of other resources to match competency index page

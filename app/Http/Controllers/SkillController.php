@@ -24,8 +24,9 @@ class SkillController extends Controller
         $orderByType = $request->query('orderByType') ?? 'asc';
 
         $skills = Skill::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
+        $trashedSkills = Skill::onlyTrashed()->get();
 
-        return view('skills.index', compact('skills'));
+        return view('skills.index', compact('skills', 'trashedSkills'));
     }
 
     /**
@@ -169,8 +170,89 @@ class SkillController extends Controller
      * @param  \App\Models\Skill  $skill
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Skill $skill)
+    public function destroy(Request $request, Skill $skill)
     {
-        //
+        // Get the code and short name of this record before deleting
+        $code = $skill->code;
+        $shortName = $skill->short_name;
+
+        $skill->delete();
+       
+        // Log this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::DELETE,
+            'table_name' => Log::TABLE_SKILLS,
+            'record_id' => $skill->id,
+            'new_state' => $skill->toJson()
+        ]);
+
+        // Redirect to index page with flash message
+        return redirect()
+            ->action(
+                [SkillController::class, 'index']
+            )->with(
+                'status',
+                "Successfully deleted Skill $code - $shortName"
+            );
+    }
+
+    /**
+     * Return trashed skills.
+     */
+    public function trashed()
+    {
+        $skills = Skill::onlyTrashed()->get();
+        return view('skills.trashed', compact('skills'));
+    }
+
+    /**
+     * Force delete an skill.
+     */
+    public function forceDelete(Request $request, $id)
+    {
+        $skill = Skill::onlyTrashed()->where('id', $id)->firstOrFail();
+        $code = $skill->code;
+        $shortName = $skill->short_name;
+
+        $skill->forceDelete();
+
+        // logs this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::FORCE_DELETE,
+            'table_name' => Log::TABLE_SKILLS,
+            'record_id' => $skill->id,
+            'new_state' => $skill->toJson()
+        ]);
+
+        return back()->with(
+            'status',
+            "Successfully force deleted Skill $code - $shortName"
+        );
+    }
+
+    /**
+     * Restore an skill.
+     */
+    public function restore(Request $request, $id)
+    {
+        $skill = Skill::onlyTrashed()->where('id', $id)->firstOrFail();
+
+        $skill->restore();
+
+        // logs this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::RESTORE,
+            'table_name' => Log::TABLE_SKILLS,
+            'record_id' => $skill->id,
+            'new_state' => $skill->toJson()
+        ]);
+
+        return back()->with(
+            'status',
+            "Successfully restored Skill $skill->code - $skill->short_name"
+        );
     }
 }

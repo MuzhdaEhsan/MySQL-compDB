@@ -21,3 +21,4 @@ require("./components/CourseCreate");
 require("./components/AttributeEdit");
 require("./components/UserCreate");
 require("./components/SkillEdit");
+require("./components/KnowledgeEdit");

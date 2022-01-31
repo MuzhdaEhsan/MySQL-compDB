@@ -4,7 +4,7 @@
     <div class="container py-2">
         {{-- Results per page selector --}}
         <div class="row justify-content-center">
-        <div class="col-5 d-flex align-items-center">
+            <div class="col-5 d-flex align-items-center">
                 <div>
                     <a href="/skills/create" class="btn btn-primary btn-sm rounded-pill">
                         <i class="fa fa-plus"></i> Create
@@ -14,7 +14,7 @@
                     <div class="ms-3">
                         <a href="/skills/trashed" class="btn btn-dark btn-sm rounded-pill">
                             <i class="fa fa-trash"></i> Trashed skills
-                            
+                            ({{ count($trashedSkills) === 0 ? 'Empty' : (count($trashedSkills) === 1 ? count($trashedSkills) . ' item' : count($trashedSkills) . ' items') }})
                         </a>
                     </div>
                 @endif
