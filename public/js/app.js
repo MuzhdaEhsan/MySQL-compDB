@@ -7514,6 +7514,52 @@ var Form = function Form() {
           rows: "2",
           placeholder: "Resolve a work-related problem to optimally meet the needs of the business"
         })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "statement",
+          className: "form-label",
+          children: "Proficiency Level"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "form-check",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          className: "form-check-input",
+          type: "radio",
+          name: "level",
+          id: "Basic",
+          value: "B",
+          defaultChecked: true
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          className: "form-check-label",
+          htmlFor: "functional",
+          children: "Basic"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "form-check",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          className: "form-check-input",
+          type: "radio",
+          name: "level",
+          id: "Intermediate",
+          value: "I"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          className: "form-check-label",
+          htmlFor: "functional",
+          children: "Intermediate"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "form-check",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          className: "form-check-input",
+          type: "radio",
+          name: "level",
+          id: "Developed ",
+          value: "D"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          className: "form-check-label",
+          htmlFor: "functional",
+          children: "Developed"
+        })]
       })]
     })
   });
@@ -9909,6 +9955,54 @@ var Form = function Form() {
           rows: "2",
           placeholder: "Resolve a work-related problem to optimally meet the needs of the business",
           defaultValue: originalStatement
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "statement",
+          className: "form-label",
+          children: "Proficiency Level"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "form-check",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          className: "form-check-input",
+          type: "radio",
+          name: "level",
+          id: "Basic",
+          value: "B",
+          defaultChecked: originalCode[1] === "B" ? true : false
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          className: "form-check-label",
+          htmlFor: "functional",
+          children: "Basic"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "form-check",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          className: "form-check-input",
+          type: "radio",
+          name: "level",
+          id: "Intermediate",
+          value: "I",
+          defaultChecked: originalCode[1] === "I" ? true : false
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          className: "form-check-label",
+          htmlFor: "functional",
+          children: "Intermediate"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "form-check",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          className: "form-check-input",
+          type: "radio",
+          name: "level",
+          id: "Developed ",
+          value: "D",
+          defaultChecked: originalCode[1] === "D" ? true : false
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          className: "form-check-label",
+          htmlFor: "functional",
+          children: "Developed"
         })]
       })]
     })
@@ -13665,30 +13759,110 @@ var Form = function Form() {
         className: "fs-4 text-center",
         children: "Create a new user:"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-        className: "mb-3",
+        "class": "row mb-3",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-          htmlFor: "user_name",
-          className: "form-label",
-          children: "Short name"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-          type: "text",
-          className: "form-control",
-          id: "user_name",
-          name: "user_name",
-          placeholder: "Problem-solving"
+          "for": "name",
+          "class": "col-md-4 col-form-label text-md-right",
+          children: "Name"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          "class": "col-md-6",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            id: "name",
+            type: "text",
+            "class": "form-control",
+            name: "name",
+            required: true,
+            autocomplete: "name",
+            autofocus: true
+          })
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-        className: "mb-3",
+        "class": "row mb-3",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-          htmlFor: "attribute_statement",
-          className: "form-label",
-          children: "Statement"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("textarea", {
-          className: "form-control",
-          id: "attribute_statement",
-          name: "attribute_statement",
-          rows: "2",
-          placeholder: "Resolve a work-related problem to optimally meet the needs of the business"
+          "for": "email",
+          "class": "col-md-4 col-form-label text-md-right",
+          children: "E-Mail Address"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          "class": "col-md-6",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            id: "email",
+            type: "email",
+            "class": "form-control",
+            name: "email",
+            required: true,
+            autocomplete: "email"
+          })
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        "class": "row mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          "for": "password",
+          "class": "col-md-4 col-form-label text-md-right",
+          children: "Password"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          "class": "col-md-6",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            id: "password",
+            type: "password",
+            "class": "form-control",
+            name: "password",
+            required: true,
+            autocomplete: "new-password"
+          })
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        "class": "row mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          "for": "password-confirm",
+          "class": "col-md-4 col-form-label text-md-right",
+          children: "Confirm Password"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          "class": "col-md-6",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            id: "password-confirm",
+            type: "password",
+            "class": "form-control",
+            name: "password_confirmation",
+            required: true,
+            autocomplete: "new-password"
+          })
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        "class": "row mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          "for": "password-confirm",
+          "class": "col-md-4 col-form-label text-md-right",
+          children: "User Role"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+          "class": "col-md-6",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+            className: "form-check",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+              className: "form-check-input",
+              type: "radio",
+              name: "role",
+              id: "Admin",
+              value: "A"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+              className: "form-check-label",
+              htmlFor: "functional",
+              children: "Admin"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+            className: "form-check",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+              className: "form-check-input",
+              type: "radio",
+              name: "role",
+              id: "Staff",
+              value: "S",
+              defaultChecked: true
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+              className: "form-check-label",
+              htmlFor: "functional",
+              children: "Staff"
+            })]
+          })]
         })]
       })]
     })

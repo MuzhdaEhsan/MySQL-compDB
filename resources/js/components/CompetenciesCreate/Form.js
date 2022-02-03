@@ -59,6 +59,50 @@ const Form = () => {
                         placeholder="Resolve a work-related problem to optimally meet the needs of the business"
                     ></textarea>
                 </div>
+
+                {/* Proficiency Level */}
+                <div>
+                    <label htmlFor="statement" className="form-label">
+                        Proficiency Level
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="radio"
+                        name="level"
+                        id="Basic"
+                        value="B"
+                        defaultChecked
+                    />
+                    <label className="form-check-label" htmlFor="functional">
+                        Basic
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="radio"
+                        name="level"
+                        id="Intermediate"
+                        value="I"
+                    />
+                    <label className="form-check-label" htmlFor="functional">
+                        Intermediate
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="radio"
+                        name="level"
+                        id="Developed "
+                        value="D"
+                    />
+                    <label className="form-check-label" htmlFor="functional">
+                        Developed 
+                    </label>
+                </div>
             </div>
         </div>
     );

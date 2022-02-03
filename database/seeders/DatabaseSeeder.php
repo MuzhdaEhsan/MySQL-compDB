@@ -37,41 +37,56 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Seed dummy data
-        // for ($i = 0; $i < 100; $i++) {
-        //     Competency::factory()->create([
-        //         'code' => ($i % 2 === 0 ? 'T' : 'F') . sprintf('%04d', $i)
-        //     ]);
-        // }
+        for ($i = 0; $i < 100; $i++) {
+            $level = '';
+            switch($i % 3) {
+                case 0:
+                    $level = 'B';
+                    break;
+                case 1:
+                    $level = 'I';
+                    break;    
+                case 2:
+                    $level = 'D';
+                    break;
+                default:
+                    break;
+            }
 
-        // function getRandomCompetencyIDs()
-        // {
-        //     $competencies = Competency::all();
-        //     $numberOfCompetencies = rand(1, 5);
-        //     $randomIDs = [];
+            Competency::factory()->create([
+                'code' => ($i % 2 === 0 ? 'T' : 'F') . $level . sprintf('%04d', $i)
+            ]);
+        }
 
-        //     for ($i = 0; $i < $numberOfCompetencies; $i++) {
-        //         $randomIDs[$i] = $competencies[rand(0, count($competencies) - 1)]->id;
-        //     }
+        function getRandomCompetencyIDs()
+        {
+            $competencies = Competency::all();
+            $numberOfCompetencies = rand(1, 5);
+            $randomIDs = [];
 
-        //     return array_unique($randomIDs);
-        // }
+            for ($i = 0; $i < $numberOfCompetencies; $i++) {
+                $randomIDs[$i] = $competencies[rand(0, count($competencies) - 1)]->id;
+            }
 
-        // for ($i = 0; $i < count(Competency::all()); $i++) {
-        //     Course::factory()->create([
-        //         'code' => 'C' . sprintf('%04d', $i),
-        //     ])->competencies()->attach(getRandomCompetencyIDs());
+            return array_unique($randomIDs);
+        }
 
-        //     Attribute::factory()->create([
-        //         'code' => 'A' . sprintf('%04d', $i),
-        //     ])->competencies()->attach(getRandomCompetencyIDs());
+        for ($i = 0; $i < count(Competency::all()); $i++) {
+            Course::factory()->create([
+                'code' => 'C' . sprintf('%04d', $i),
+            ])->competencies()->attach(getRandomCompetencyIDs());
 
-        //     Knowledge::factory()->create([
-        //         'code' => 'K' . sprintf('%04d', $i),
-        //     ])->competencies()->attach(getRandomCompetencyIDs());
+            Attribute::factory()->create([
+                'code' => 'A' . sprintf('%04d', $i),
+            ])->competencies()->attach(getRandomCompetencyIDs());
 
-        //     Skill::factory()->create([
-        //         'code' => 'S' . sprintf('%04d', $i),
-        //     ])->competencies()->attach(getRandomCompetencyIDs());
-        // }
+            Knowledge::factory()->create([
+                'code' => 'K' . sprintf('%04d', $i),
+            ])->competencies()->attach(getRandomCompetencyIDs());
+
+            Skill::factory()->create([
+                'code' => 'S' . sprintf('%04d', $i),
+            ])->competencies()->attach(getRandomCompetencyIDs());
+        }
     }
 }

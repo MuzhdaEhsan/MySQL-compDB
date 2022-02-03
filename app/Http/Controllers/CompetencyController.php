@@ -66,7 +66,7 @@ class CompetencyController extends Controller
 
         // Create a new competency record
         $competency = Competency::create([
-            'code' => $request->input('type') . sprintf('%04d', $latestRecordCodeNumber + 1),
+            'code' => $request->input('type') . $request->input('level') . sprintf('%04d', $latestRecordCodeNumber + 1),
             'short_name' => $request->input('short_name'),
             'statement' => $request->input('statement')
         ]);
@@ -139,7 +139,7 @@ class CompetencyController extends Controller
 
         // Create a new competency record
         $competency->update([
-            'code' => $request->type . substr($competency->code, 1),
+            'code' => $request->type . $request->level . substr($competency->code, 2),
             'short_name' => $request->input('short_name'),
             'statement' => $request->input('statement')
         ]);

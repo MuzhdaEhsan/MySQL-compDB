@@ -22,8 +22,6 @@ const UsersCreateView = () => {
         form.submit();
     };
 
-   
-
     return (
         <div className="container py-4">
             <Form />
