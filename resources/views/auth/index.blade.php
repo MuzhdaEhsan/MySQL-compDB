@@ -10,13 +10,7 @@
                         <i class="fa fa-plus"></i> Create
                     </a>
                 </div>
-                @if (auth()->user()->isAdmin())
-                    <div class="ms-3">
-                        <a href="/competencies/trashed" class="btn btn-dark btn-sm rounded-pill">
-                            <i class="fa fa-trash"></i> Trashed Users
-                        </a>
-                    </div>
-                @endif
+                
             </div>
             <div class="col-3">
                 <div class="d-flex justify-content-end align-items-center mb-2">
@@ -63,8 +57,8 @@
                             <tr>
                                 <th scope="col" width="10%">Name</th>
                                 <th scope="col" width="25%">Email</th>
-                                <th scope="col" width="35%">Role</th>
-                                <th scope="col" width="30%">Actions</th>
+                                <th scope="col" width="25%">Role</th>
+                                <th scope="col" width="40%">Actions</th>
                             </tr>
                         </thead>
 
@@ -100,6 +94,13 @@
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
+                                            </li>
+
+                                            <li class="list-inline-item">
+                                                <a href="/users/{{ $user->id }}/ChangePass"
+                                                    class="btn btn-success btn-sm rounded-pill">
+                                                    <i class="fa fa-edit"></i> Change Password
+                                                </a>
                                             </li>
                                         </ul>
                                     </td>

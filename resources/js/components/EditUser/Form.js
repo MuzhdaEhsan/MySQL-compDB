@@ -4,7 +4,7 @@ const Form = () => {
     return (
         <div className="row justify-content-center">
             <div className="col-6">
-                <p className="fs-4 text-center">Create a new user:</p>
+                <p className="fs-4 text-center">Edit a user:</p>
 
                 {/* User name */}
                 <div className="row mb-3">
@@ -15,7 +15,8 @@ const Form = () => {
                             id="name" 
                             type="text" 
                             className="form-control" 
-                            name="name"  
+                            name="name" 
+                            defaultValue={originalName} 
                         />
                     </div>
                 </div>
@@ -31,33 +32,8 @@ const Form = () => {
                             type="email" 
                             className="form-control" 
                             name="email_address" 
+                            defaultValue={originalEmail}
                         />
-                    </div>
-                </div>
-                {/* Password */}
-                <div className="row mb-3">
-                    <label htmlFor="user_password" className="col-md-4 col-form-label text-md-right">Password</label>
-
-                    <div className="col-md-6">
-                        <input 
-                            id="user_password" 
-                            type="password" 
-                            className="form-control" 
-                            name="user_password" 
-                           />
-                    </div>
-                </div>
-                {/* confirm password */}
-                <div className="row mb-3">
-                    <label htmlFor="password_confirm" className="col-md-4 col-form-label text-md-right">Confirm Password</label>
-
-                    <div className="col-md-6">
-                        <input 
-                            id="password_confirm" 
-                            type="password" 
-                            className="form-control" 
-                            name="password_confirm" 
-                            />
                     </div>
                 </div>
                 
@@ -71,6 +47,7 @@ const Form = () => {
                                 name="role"
                                 id="Admin"
                                 value="1"
+                                defaultChecked={originalIsAdmin === "1" ? true : false}
                             />
                             <label className="form-check-label" htmlFor="Admin">
                                 Admin
@@ -84,7 +61,7 @@ const Form = () => {
                                 name="role"
                                 id="Staff"
                                 value="0"
-                                defaultChecked
+                                defaultChecked={originalIsAdmin === "0" ? true : false}
                             />
                             <label className="form-check-label" htmlFor="Staff">
                                 Staff

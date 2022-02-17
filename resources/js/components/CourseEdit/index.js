@@ -3,17 +3,17 @@ import ReactDOM from "react-dom";
 import axios from "axios";
 import { isNumber } from "lodash";
 
-
 import Form from "./Form";
 import CompetencyAccordion from "./CompetencyAccordion";
 
-const CoursesCreateView = () => {
+const CourseEditView = () => {
+
     // States
     const [competencies, setCompetencies] = useState([]);
     const [selectedCompetencies, setSelectedCompetencies] = useState([]);
 
-     // Helper methods
-     const setFormHeight = (mainPanel, selectedItemsPanel) => {
+    // Helper methods
+    const setFormHeight = (mainPanel, selectedItemsPanel) => {
         // We set the height of the selected items panel to be equal to the height
         // of the main form because if there are too many selected items, we don't
         // want to display a long list of it while the main form looks empty
@@ -78,24 +78,43 @@ const CoursesCreateView = () => {
                 Accept: "application/json",
             },
         });
-        
-        setCompetencies(dataCom?.competencies ?? []);
+
+        // Data from Blade for competency
+        if (typeof originalRelatedCompetencies === "string") {   
+            originalRelatedCompetencies = JSON.parse(
+                originalRelatedCompetencies.replaceAll("&quot;", '"')
+            );
+            setSelectedCompetencies(originalRelatedCompetencies);
+
+            // Remove the original selected competencies from the competencies list
+            let competencies = dataCom?.competencies ?? [];
+            for (let i = 0; i < competencies.length; ++i) {
+                for (let j = 0; j < originalRelatedCompetencies.length; ++j) {
+                    if (competencies[i].id === originalRelatedCompetencies[j].id) {
+                        competencies.splice(i, 1);
+                    }
+                }
+            }
+            setCompetencies(competencies);
+        }
+
+        //console.log(originalRelatedCourses);
     };
 
     const submitForm = (event) => {
         event.preventDefault();
 
-        const form = document.querySelector("#courseCreateForm");
+        const form = document.querySelector("#courseEditForm");
 
-        // get the selected competencies to add 
-        selectedCompetencies.forEach((competency) => {
+         // get the selected competencies to update
+         selectedCompetencies.forEach((competency) => {
             const input = document.createElement("input");
             input.setAttribute("name", "competencies[]");
             input.value = competency?.id;
             input.classList.add("d-none");
             form.appendChild(input);
         });
-
+        
         form.submit();
     };
 
@@ -103,20 +122,19 @@ const CoursesCreateView = () => {
     useEffect(() => {
         fetchOriginalData();
     }, []);
-    
+
     useEffect(() => {
         setFormHeight(
             document.querySelector("#competenciesForm"),
             document.querySelector("#selectedCompetenciesPanel")
-
+            
         );
     }, [competencies]);
-
 
     return (
         <div className="container py-4">
             <Form />
-            
+
             {/* Accordion section */}
             <div className="accordion my-3">
                 {/* Add Competencies section */}
@@ -130,8 +148,7 @@ const CoursesCreateView = () => {
                     removeItem={removeItem}
                 />
             </div>
-            
-            
+
             {/* Submit button  */}
             <div className="d-flex justify-content-center">
                 <button
@@ -139,18 +156,19 @@ const CoursesCreateView = () => {
                     className="btn btn-primary"
                     onClick={submitForm}
                 >
-                    Create
+                    Edit
                 </button>
             </div>
         </div>
     );
+
 };
 
-export default CoursesCreateView;
+export default CourseEditView;
 
-if (document.getElementById("courses-create-view")) {
+if (document.getElementById("courses-edit-view")) {
     ReactDOM.render(
-        <CoursesCreateView />,
-        document.getElementById("courses-create-view")
+        <CourseEditView />,
+        document.getElementById("courses-edit-view")
     );
 }

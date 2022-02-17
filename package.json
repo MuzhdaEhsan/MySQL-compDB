@@ -24,6 +24,8 @@
         "sass-loader": "^11.0.1"
     },
     "dependencies": {
-        "excel": "^1.0.1"
+        "excel": "^1.0.1",
+        "excell": "^0.0.0-alpha-1",
+        "xlsx": "^0.18.0"
     }
 }

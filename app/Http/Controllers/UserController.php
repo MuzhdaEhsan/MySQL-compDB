@@ -19,7 +19,7 @@ class UserController extends Controller
         $orderByType = $request->query('orderByType') ?? 'asc';
 
         $users = User::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
-
+       
         return view('auth.index', compact('users'));
     }
 
@@ -42,7 +42,38 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['string', 'required'],
+            'email_address' => ['required', 'email'],
+            'user_password' => ['required', 'min:6'],
+            'password_confirm' => ['required_with:user_password', 'same:user_password', 'min:6'],
+        ]);
+
+       
+        // Create a new User record
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email_address'),
+            'is_admin' => $request->input('role'),
+            'password' => bcrypt($request->input('password'))
+           
+        ]);
+
+        //print_r($user); exit;
+
+        //TODO: Log this event
+        
+        if ($request->expectsJson()) {
+            return response()->json(['user' => $user]);
+        }
+
+        return redirect()
+            ->action(
+                [UserController::class, 'index']
+            )->with(
+                'status',
+                "Successfully create a new user $user->name - $user->email"
+            );
     }
 
     /**
@@ -64,7 +95,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('auth.edit', compact('user'));
     }
 
     /**
@@ -76,7 +107,29 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => ['string', 'required'],
+            'email_address' => ['required', 'email'],
+        ]);
+
+        // update the record
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email_address'),
+            'is_admin' => $request->input('role'),
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['user' => $user]);
+        }
+
+        return redirect()
+            ->action(
+                [UserController::class, 'index']
+            )->with(
+                'status',
+                "Successfully updated user $user->name - $user->email"
+            );
     }
 
     /**
@@ -87,6 +140,29 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        // Get the code and short name of this record before deleting
+        $name = $user->name;
+        $email = $user->email;
+
+        $user->delete();
+
+        // Redirect to index page with flash message
+        return redirect()
+            ->action(
+                [UserController::class, 'index']
+            )->with(
+                'status',
+                "Successfully deleted User $name - $email"
+            );
+    }
+
+    /**
+     * Show the form for changing the password.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword($id)
+    {
+        return view('auth.reset');
     }
 }

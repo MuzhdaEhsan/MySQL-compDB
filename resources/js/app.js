@@ -22,3 +22,6 @@ require("./components/AttributeEdit");
 require("./components/UserCreate");
 require("./components/SkillEdit");
 require("./components/KnowledgeEdit");
+require("./components/EditUser");
+require("./components/ChangePassword");
+require("./components/CourseEdit");

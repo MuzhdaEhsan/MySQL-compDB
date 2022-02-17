@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -24,7 +25,9 @@ class CourseController extends Controller
 
         $courses = Course::orderBy($orderBy, $orderByType)->paginate($resultsPerPage)->withQueryString();
 
-        return view('courses.index', compact('courses'));
+        $trashedCourses = Course::onlyTrashed()->get();
+
+        return view('courses.index', compact('courses', 'trashedCourses'));
     }
 
     /**
@@ -34,7 +37,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        return view('courses.create');
     }
 
     /**
@@ -63,9 +66,29 @@ class CourseController extends Controller
             'full_name' => $request->input('course_full_name')
         ]);
 
+        // Log this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::CREATE,
+            'table_name' => Log::TABLE_COURSES,
+            'record_id' => $course->id,
+            'new_state' => $course->toJson()
+        ]);
+
+        // Add related competencies using ATTACH (add new items)
+        $course->competencies()->attach($request->input('competencies') ?? []);
+
         if ($request->expectsJson()) {
             return response()->json(['course' => $course]);
         }
+
+        return redirect()
+        ->action(
+            [CourseController::class, 'index']
+        )->with(
+            'status',
+            "Successfully create a new course $course->code - $course->full_name"
+        );
     }
 
     /**
@@ -87,7 +110,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        return view('courses.edit', compact('course'));
     }
 
     /**
@@ -99,7 +122,43 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $request->validate([
+            'course_full_name' => ['string', 'required'],
+        ]);
+
+        $originalCourse = $course->toJson();
+
+        // Create a new course record
+        $course->update([
+            'code' => 'C' . substr($course->code, 1),
+            'full_name' => $request->input('course_full_name')
+        ]);
+
+        // Log this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::UPDATE,
+            'table_name' => Log::TABLE_COURSES,
+            'record_id' => $course->id,
+            'old_state' => $originalCourse,
+            'new_state' => $course->toJson()
+        ]);
+
+        // Add related competencies using SYNC (synchronize the list)
+        $course->competencies()->sync($request->input('competencies') ?? []);
+       
+
+        if ($request->expectsJson()) {
+            return response()->json(['course' => $course]);
+        }
+
+        return redirect()
+            ->action(
+                [CourseController::class, 'index']
+            )->with(
+                'status',
+                "Successfully updated course $course->code - $course->full_name"
+            );
     }
 
     /**
@@ -108,8 +167,89 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Course $course)
+    public function destroy(Request $request, Course $course)
     {
-        //
+         // Get the code and short name of this record before deleting
+         $code = $course->code;
+         $fullName = $course->full_name;
+ 
+         $course->delete();
+        
+         // Log this event
+         Log::create([
+             'user_id' => $request->user()->id,
+             'action' => Log::DELETE,
+             'table_name' => Log::TABLE_COURSES,
+             'record_id' => $course->id,
+             'new_state' => $course->toJson()
+         ]);
+ 
+         // Redirect to index page with flash message
+         return redirect()
+             ->action(
+                 [CourseController::class, 'index']
+             )->with(
+                 'status',
+                 "Successfully deleted Course $code - $fullName"
+             );
+    }
+
+    /**
+     * Return trashed courses.
+     */
+    public function trashed()
+    {
+        $courses = Course::onlyTrashed()->get();
+        return view('courses.trashed', compact('courses'));
+    }
+
+    /**
+     * Force delete a course.
+     */
+    public function forceDelete(Request $request, $id)
+    {
+        $course = Course::onlyTrashed()->where('id', $id)->firstOrFail();
+        $code = $course->code;
+        $fullName = $course->full_name;
+
+        $course->forceDelete();
+
+        // logs this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::FORCE_DELETE,
+            'table_name' => Log::TABLE_COURSES,
+            'record_id' => $course->id,
+            'new_state' => $course->toJson()
+        ]);
+
+        return back()->with(
+            'status',
+            "Successfully force deleted Course $code - $fullName"
+        );
+    }
+
+    /**
+     * Restore a course.
+     */
+    public function restore(Request $request, $id)
+    {
+        $course = Course::onlyTrashed()->where('id', $id)->firstOrFail();
+
+        $course->restore();
+
+        // logs this event
+        Log::create([
+            'user_id' => $request->user()->id,
+            'action' => Log::RESTORE,
+            'table_name' => Log::TABLE_COURSES,
+            'record_id' => $course->id,
+            'new_state' => $course->toJson()
+        ]);
+
+        return back()->with(
+            'status',
+            "Successfully restored Course $course->code - $course->full_name"
+        );
     }
 }
