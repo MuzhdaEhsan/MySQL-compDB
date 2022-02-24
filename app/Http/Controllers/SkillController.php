@@ -66,7 +66,6 @@ class SkillController extends Controller
             'statement' => $request->input('skill_statement')
         ]);
 
-
         // Log this event
         Log::create([
             'user_id' => $request->user()->id,

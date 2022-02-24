@@ -61,7 +61,7 @@ const Form = () => {
                                 name="role"
                                 id="Staff"
                                 value="0"
-                                defaultChecked={originalIsAdmin === "0" ? true : false}
+                                defaultChecked={originalIsAdmin === "" ? true : false}
                             />
                             <label className="form-check-label" htmlFor="Staff">
                                 Staff

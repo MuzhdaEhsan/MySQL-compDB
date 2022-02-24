@@ -91,8 +91,7 @@ const Form = () => {
                             </label>
                         </div>
                     </div>
-                </div>
-                        
+                </div>  
             </div>
         </div>
     );

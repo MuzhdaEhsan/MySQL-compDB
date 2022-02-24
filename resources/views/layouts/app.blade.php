@@ -45,7 +45,7 @@
                         : 'Staff' }}
                     - {{ auth()->user()->name }}</a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="/settings">Settings</a></li>
+                    <li><a class="dropdown-item" href="/users/{{ auth()->user()->id }}/ChangePass">Change Password</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>

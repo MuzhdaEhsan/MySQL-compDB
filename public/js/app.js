@@ -12745,7 +12745,7 @@ var Form = function Form() {
               name: "role",
               id: "Staff",
               value: "0",
-              defaultChecked: originalIsAdmin === "0" ? true : false
+              defaultChecked: originalIsAdmin === "" ? true : false
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
               className: "form-check-label",
               htmlFor: "Staff",

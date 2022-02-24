@@ -12,7 +12,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request,)
+    public function index(Request $request)
     {
         $resultsPerPage = $request->query('resultsPerPage') ?? 10;
         $orderBy = $request->query('orderBy') ?? 'id';
@@ -49,17 +49,17 @@ class UserController extends Controller
             'password_confirm' => ['required_with:user_password', 'same:user_password', 'min:6'],
         ]);
 
+        //print_r($request->input('user_password')); exit;
        
         // Create a new User record
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email_address'),
             'is_admin' => $request->input('role'),
-            'password' => bcrypt($request->input('password'))
-           
+            'password' => bcrypt($request->input('user_password')),
+            'remember_token' => $request->input('token')
         ]);
 
-        //print_r($user); exit;
 
         //TODO: Log this event
         
@@ -95,6 +95,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        //print($user->is_admin); exit;
         return view('auth.edit', compact('user'));
     }
 
@@ -163,6 +164,40 @@ class UserController extends Controller
      */
     public function changePassword($id)
     {
-        return view('auth.reset');
+        return view('auth.reset', compact('id'));
+    }
+
+    /**
+     * 
+     */
+    public function UpdatePassword(Request $request, $id)
+    {
+        $user = User::all()->where('id', $id)->firstOrFail();
+        
+        $name = $user->name;
+        $email = $user->email;
+
+        $request->validate([
+            'user_password' => ['required', 'min:6'],
+            'password_confirm' => ['required_with:user_password', 'same:user_password', 'min:6'],
+        ]);
+        
+
+        // update the record
+        $user->update([
+            'password' => bcrypt($request->input('user_password'))
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['user' => $user]);
+        }
+
+        return redirect()
+            ->action(
+                [UserController::class, 'index']
+            )->with(
+                'status',
+                "Successfully updated password for user $name - $email"
+            );
     }
 }
