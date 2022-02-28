@@ -5,7 +5,7 @@ import { Modal } from "bootstrap";
 const CourseModal = ({ addItem, setCourses, setSelectedCourses }) => {
     // States
     const [courseFullName, setCourseFullName] = useState("");
-    //const [skillStatement, setSkillStatement] = useState("");
+    const [courseCode, setCourseCode] = useState("");
 
     // Helper methods
     const saveCourse = async () => {
@@ -14,13 +14,14 @@ const CourseModal = ({ addItem, setCourses, setSelectedCourses }) => {
 
             const { data } = await axios.post("/courses", {
                 course_full_name: courseFullName,
-                //skill_statement: skillStatement,
+                course_code: courseCode,
             });
 
             addItem(data?.course, setCourses, setSelectedCourses);
 
             // Clear inputs and hide the modal
             setCourseFullName("");
+            setCourseCode("");
             
             Modal.getInstance(
                 document.getElementById("createNewCourseModal")
@@ -54,13 +55,34 @@ const CourseModal = ({ addItem, setCourses, setSelectedCourses }) => {
                     </div>
                     {/* Modal body */}
                     <div className="modal-body">
+
+                        {/* Course code */}
+                        <div className="mb-3">
+                            <label
+                                htmlFor="course_code"
+                                className="form-label"
+                            >
+                                Course Code
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="course_code"
+                                name="course_code"
+                                value={courseCode}
+                                onChange={(event) =>
+                                    setCourseCode(event.target.value)
+                                }
+                            />
+                        </div>
+
                         {/* Course full name */}
                         <div className="mb-3">
                             <label
                                 htmlFor="course_full_name"
                                 className="form-label"
                             >
-                                Short name
+                                Full name
                             </label>
                             <input
                                 type="text"

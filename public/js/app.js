@@ -5834,6 +5834,11 @@ var AttributesCreateView = function AttributesCreateView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#attributeCreateForm"); // get the selected competencies to add 
@@ -5868,14 +5873,25 @@ var AttributesCreateView = function AttributesCreateView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Create"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Create"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 };
@@ -6415,6 +6431,11 @@ var AttributeEditView = function AttributeEditView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#attributeEditForm"); // get the selected competencies to update
@@ -6449,14 +6470,25 @@ var AttributeEditView = function AttributeEditView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Edit"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Update"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 };
@@ -7444,8 +7476,12 @@ var CourseModal = function CourseModal(_ref) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
       _useState2 = _slicedToArray(_useState, 2),
       courseFullName = _useState2[0],
-      setCourseFullName = _useState2[1]; //const [skillStatement, setSkillStatement] = useState("");
-  // Helper methods
+      setCourseFullName = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      courseCode = _useState4[0],
+      setCourseCode = _useState4[1]; // Helper methods
 
 
   var saveCourse = /*#__PURE__*/function () {
@@ -7468,8 +7504,8 @@ var CourseModal = function CourseModal(_ref) {
             case 3:
               _context.next = 5;
               return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/courses", {
-                course_full_name: courseFullName //skill_statement: skillStatement,
-
+                course_full_name: courseFullName,
+                course_code: courseCode
               });
 
             case 5:
@@ -7478,21 +7514,22 @@ var CourseModal = function CourseModal(_ref) {
               addItem(data === null || data === void 0 ? void 0 : data.course, setCourses, setSelectedCourses); // Clear inputs and hide the modal
 
               setCourseFullName("");
+              setCourseCode("");
               bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal.getInstance(document.getElementById("createNewCourseModal")).hide();
-              _context.next = 15;
+              _context.next = 16;
               break;
 
-            case 12:
-              _context.prev = 12;
+            case 13:
+              _context.prev = 13;
               _context.t0 = _context["catch"](0);
               console.error(_context.t0);
 
-            case 15:
+            case 16:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 12]]);
+      }, _callee, null, [[0, 13]]);
     }));
 
     return function saveCourse() {
@@ -7522,14 +7559,30 @@ var CourseModal = function CourseModal(_ref) {
             "data-bs-dismiss": "modal",
             "aria-label": "Close"
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "modal-body",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+              htmlFor: "course_code",
+              className: "form-label",
+              children: "Course Code"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+              type: "text",
+              className: "form-control",
+              id: "course_code",
+              name: "course_code",
+              value: courseCode,
+              onChange: function onChange(event) {
+                return setCourseCode(event.target.value);
+              }
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             className: "mb-3",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
               htmlFor: "course_full_name",
               className: "form-label",
-              children: "Short name"
+              children: "Full name"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
               type: "text",
               className: "form-control",
@@ -7540,7 +7593,7 @@ var CourseModal = function CourseModal(_ref) {
                 return setCourseFullName(event.target.value);
               }
             })]
-          })
+          })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "modal-footer",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
@@ -8919,6 +8972,11 @@ function CompetenciesCreateView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#competencyCreateForm"); // get the selected skills to add 
@@ -9010,14 +9068,25 @@ function CompetenciesCreateView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Create"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Create"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 }
@@ -9883,8 +9952,12 @@ var CourseModal = function CourseModal(_ref) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
       _useState2 = _slicedToArray(_useState, 2),
       courseFullName = _useState2[0],
-      setCourseFullName = _useState2[1]; //const [skillStatement, setSkillStatement] = useState("");
-  // Helper methods
+      setCourseFullName = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      courseCode = _useState4[0],
+      setCourseCode = _useState4[1]; // Helper methods
 
 
   var saveCourse = /*#__PURE__*/function () {
@@ -9907,8 +9980,8 @@ var CourseModal = function CourseModal(_ref) {
             case 3:
               _context.next = 5;
               return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/courses", {
-                course_full_name: courseFullName //skill_statement: skillStatement,
-
+                course_full_name: courseFullName,
+                course_code: courseCode
               });
 
             case 5:
@@ -9917,21 +9990,22 @@ var CourseModal = function CourseModal(_ref) {
               addItem(data === null || data === void 0 ? void 0 : data.course, setCourses, setSelectedCourses); // Clear inputs and hide the modal
 
               setCourseFullName("");
+              setCourseCode("");
               bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal.getInstance(document.getElementById("createNewCourseModal")).hide();
-              _context.next = 15;
+              _context.next = 16;
               break;
 
-            case 12:
-              _context.prev = 12;
+            case 13:
+              _context.prev = 13;
               _context.t0 = _context["catch"](0);
               console.error(_context.t0);
 
-            case 15:
+            case 16:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 12]]);
+      }, _callee, null, [[0, 13]]);
     }));
 
     return function saveCourse() {
@@ -9961,14 +10035,30 @@ var CourseModal = function CourseModal(_ref) {
             "data-bs-dismiss": "modal",
             "aria-label": "Close"
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "modal-body",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+              htmlFor: "course_code",
+              className: "form-label",
+              children: "Course Code"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+              type: "text",
+              className: "form-control",
+              id: "course_code",
+              name: "course_code",
+              value: courseCode,
+              onChange: function onChange(event) {
+                return setCourseCode(event.target.value);
+              }
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             className: "mb-3",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
               htmlFor: "course_full_name",
               className: "form-label",
-              children: "Short name"
+              children: "Full name"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
               type: "text",
               className: "form-control",
@@ -9979,7 +10069,7 @@ var CourseModal = function CourseModal(_ref) {
                 return setCourseFullName(event.target.value);
               }
             })]
-          })
+          })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "modal-footer",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
@@ -11430,6 +11520,11 @@ var CompetenciesEditView = function CompetenciesEditView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#competencyEditForm"); // get the selected skills to update
@@ -11521,14 +11616,25 @@ var CompetenciesEditView = function CompetenciesEditView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Edit"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Update"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 };
@@ -11859,15 +11965,28 @@ var Form = function Form() {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         className: "mb-3",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "course_code",
+          className: "form-label",
+          children: "Course code"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          type: "text",
+          className: "form-control",
+          id: "course_code",
+          name: "course_code",
+          placeholder: "ABCD-1234"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
           htmlFor: "course_full_name",
           className: "form-label",
-          children: "Short name"
+          children: "Full name"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
           type: "text",
           className: "form-control",
           id: "course_full_name",
           name: "course_full_name",
-          placeholder: "Problem-solving"
+          placeholder: "Psychology"
         })]
       })]
     })
@@ -12037,6 +12156,11 @@ var CoursesCreateView = function CoursesCreateView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#courseCreateForm"); // get the selected competencies to add 
@@ -12071,14 +12195,25 @@ var CoursesCreateView = function CoursesCreateView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Create"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Create"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 };
@@ -12409,9 +12544,23 @@ var Form = function Form() {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         className: "mb-3",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+          htmlFor: "course_code",
+          className: "form-label",
+          children: "Course code"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+          type: "text",
+          className: "form-control",
+          id: "course_code",
+          name: "course_code",
+          placeholder: "ABCD-1234",
+          defaultValue: originalCode
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
           htmlFor: "course_full_name",
           className: "form-label",
-          children: "Short name"
+          children: "Full name"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
           type: "text",
           className: "form-control",
@@ -12604,6 +12753,11 @@ var CourseEditView = function CourseEditView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#courseEditForm"); // get the selected competencies to update
@@ -12638,14 +12792,25 @@ var CourseEditView = function CourseEditView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Edit"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Update"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 };
@@ -13329,6 +13494,11 @@ var KnowledgeCreateView = function KnowledgeCreateView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#knowledgeCreateForm"); // get the selected competencies to add 
@@ -13363,14 +13533,25 @@ var KnowledgeCreateView = function KnowledgeCreateView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Create"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Create"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 };
@@ -13910,6 +14091,11 @@ var KnowledgeEditView = function KnowledgeEditView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#knowledgeEditForm"); // get the selected competencies to update
@@ -13944,14 +14130,25 @@ var KnowledgeEditView = function KnowledgeEditView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Edit"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Create"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 };
@@ -14491,6 +14688,11 @@ var SkillEditView = function SkillEditView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#skillEditForm"); // get the selected competencies to update
@@ -14525,14 +14727,25 @@ var SkillEditView = function SkillEditView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Edit"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Create"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 };
@@ -15054,6 +15267,11 @@ var SkillsCreateView = function SkillsCreateView() {
     };
   }();
 
+  var cancelForm = function cancelForm(event) {
+    event.preventDefault();
+    history.back();
+  };
+
   var submitForm = function submitForm(event) {
     event.preventDefault();
     var form = document.querySelector("#skillCreateForm"); // get the selected competencies to add 
@@ -15088,14 +15306,25 @@ var SkillsCreateView = function SkillsCreateView() {
         addItem: addItem,
         removeItem: removeItem
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "d-flex justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: submitForm,
-        children: "Create"
-      })
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: submitForm,
+          children: "Create"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "col-1",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+          type: "button",
+          className: "btn btn-primary",
+          onClick: cancelForm,
+          children: "Cancel"
+        })
+      })]
     })]
   });
 };

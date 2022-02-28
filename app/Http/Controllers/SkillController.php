@@ -54,7 +54,8 @@ class SkillController extends Controller
         $latestRecordCodeNumber = 0;
 
         // Get the latest record ordered by id to extract number from the code
-        $latestRecord = Skill::orderBy('id', 'desc')->first();
+        $latestRecord = Skill::withTrashed()->orderBy('id', 'desc')->get()->first();
+        
         if ($latestRecord) {
             $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
         }

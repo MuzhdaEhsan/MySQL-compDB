@@ -56,7 +56,7 @@ class CompetencyController extends Controller
         $latestRecordCodeNumber = 0;
 
         // Get the latest record ordered by id to extract number from the code
-        $latestRecord = Competency::orderBy('id', 'desc')->first();
+        $latestRecord = Competency::withTrashed()->orderBy('id', 'desc')->get()->first();
 
         //print_r($latestRecord); exit;
 

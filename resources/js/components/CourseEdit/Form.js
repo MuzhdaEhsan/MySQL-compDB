@@ -6,10 +6,25 @@ const Form = () => {
             <div className="col-6">
                 <p className="fs-4 text-center">Edit course:</p>
 
+                {/* Course code */}
+                <div className="mb-3">
+                    <label htmlFor="course_code" className="form-label">
+                        Course code
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="course_code"
+                        name="course_code"
+                        placeholder="ABCD-1234"
+                        defaultValue={originalCode}
+                    />
+                </div> 
+
                 {/* Course full name */}
                 <div className="mb-3">
                     <label htmlFor="course_full_name" className="form-label">
-                        Short name
+                        Full name
                     </label>
                     <input
                         type="text"

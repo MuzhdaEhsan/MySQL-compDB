@@ -55,7 +55,7 @@ class KnowledgeController extends Controller
         $latestRecordCodeNumber = 0;
 
         // Get the latest record ordered by id to extract number from the code
-        $latestRecord = Knowledge::orderBy('id', 'desc')->first();
+        $latestRecord = Knowledge::withTrashed()->orderBy('id', 'desc')->get()->first();
         if ($latestRecord) {
             $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
         }

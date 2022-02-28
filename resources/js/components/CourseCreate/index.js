@@ -82,6 +82,11 @@ const CoursesCreateView = () => {
         setCompetencies(dataCom?.competencies ?? []);
     };
 
+    const cancelForm = (event) => {
+        event.preventDefault();
+        history.back();
+    };
+
     const submitForm = (event) => {
         event.preventDefault();
 
@@ -131,16 +136,27 @@ const CoursesCreateView = () => {
                 />
             </div>
             
-            
             {/* Submit button  */}
             <div className="d-flex justify-content-center">
-                <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={submitForm}
-                >
-                    Create
-                </button>
+                
+                <div className="col-1">
+                    <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={submitForm}
+                    >
+                        Create
+                    </button>
+                </div>
+                <div className="col-1">
+                    <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={cancelForm}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </div>
         </div>
     );

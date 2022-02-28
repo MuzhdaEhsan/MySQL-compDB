@@ -49,20 +49,22 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'course_code' => ['regex:/^[a-zA-Z]/', 'required'],
             'course_full_name' => ['string', 'required'],
         ]);
+
 
         $latestRecordCodeNumber = 0;
 
         // Get the latest record ordered by id to extract number from the code
-        $latestRecord = Course::orderBy('id', 'desc')->first();
+        $latestRecord = Course::withTrashed()->orderBy('id', 'desc')->get()->first();
         if ($latestRecord) {
             $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
         }
 
         // Create a new course record
         $course = Course::create([
-            'code' => 'C' . sprintf('%04d', $latestRecordCodeNumber + 1),
+            'code' => $request->input('course_code'),
             'full_name' => $request->input('course_full_name')
         ]);
 
@@ -123,6 +125,7 @@ class CourseController extends Controller
     public function update(Request $request, Course $course)
     {
         $request->validate([
+            'course_code' => ['regex:/^[a-zA-Z]/', 'required'], 
             'course_full_name' => ['string', 'required'],
         ]);
 
@@ -130,7 +133,7 @@ class CourseController extends Controller
 
         // Create a new course record
         $course->update([
-            'code' => 'C' . substr($course->code, 1),
+            'code' => $request->input('course_code'),
             'full_name' => $request->input('course_full_name')
         ]);
 

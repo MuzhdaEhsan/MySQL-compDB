@@ -57,10 +57,13 @@ class AttributeController extends Controller
         $latestRecordCodeNumber = 0;
 
         // Get the latest record ordered by id to extract number from the code
-        $latestRecord = Attribute::orderBy('id', 'desc')->first();
+        $latestRecord = Attribute::withTrashed()->orderBy('id', 'desc')->get()->first();
+
         if ($latestRecord) {
             $latestRecordCodeNumber = intval(substr($latestRecord->code, 1));
         }
+
+        //print($latestRecordCodeNumber); exit; 
 
         // Create a new attribute record
         $attribute = Attribute::create([
