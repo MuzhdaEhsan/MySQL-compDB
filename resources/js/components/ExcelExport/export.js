@@ -1,67 +1,59 @@
-import React from "react";
-import ReactExport from "react-export-excel";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { ExcelExport, ExcelExportColumn, ExcelExportColumnGroup } from '@progress/kendo-react-excel-export';
+import { aggregateBy, process } from '@progress/kendo-data-query';
+import products from './products.json';
+const aggregates = [{
+  field: 'UnitPrice',
+  aggregate: 'sum'
+}];
+const group = [{
+  field: 'Discontinued',
+  aggregates: aggregates
+}];
+const data = process(products, {
+  group: group
+}).data;
+const total = aggregateBy(products, aggregates);
 
-const ExcelFile = ReactExport.ExcelFile;
-const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+const CustomGroupHeader = props => `Discontinued: ${props.value}`;
 
-const dataSet1 = [
-    {
-        name: "Johson",
-        amount: 30000,
-        sex: 'M',
-        is_married: true
-    },
-    {
-        name: "Monika",
-        amount: 355000,
-        sex: 'F',
-        is_married: false
-    },
-    {
-        name: "John",
-        amount: 250000,
-        sex: 'M',
-        is_married: false
-    },
-    {
-        name: "Josef",
-        amount: 450500,
-        sex: 'M',
-        is_married: true
+const CustomGroupFooter = props => `SUM: \$ ${props.aggregates.UnitPrice.sum.toFixed(2)}`;
+
+const CustomFooter = props => `Total ${props.column.title}: \$ ${total.UnitPrice.sum}`;
+
+const App = () => {
+  const _exporter = React.createRef();
+
+  const exportExcel = () => {
+    if (_exporter.current) {
+      _exporter.current.save();
     }
-];
+  };
 
-const dataSet2 = [
-    {
-        name: "Johnson",
-        total: 25,
-        remainig: 16
-    },
-    {
-        name: "Josef",
-        total: 25,
-        remainig: 7
-    }
-];
+  return <div>
+        <button className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-base" onClick={exportExcel}>Export to Excel</button>
 
-class Download extends React.Component {
-    render() {
-        return (
-            <ExcelFile>
-                <ExcelSheet data={dataSet1} name="Employees">
-                    <ExcelColumn label="Name" value="name"/>
-                    <ExcelColumn label="Wallet Money" value="amount"/>
-                    <ExcelColumn label="Gender" value="sex"/>
-                    <ExcelColumn label="Marital Status"
-                                 value={(col) => col.is_married ? "Married" : "Single"}/>
-                </ExcelSheet>
-                <ExcelSheet data={dataSet2} name="Leaves">
-                    <ExcelColumn label="Name" value="name"/>
-                    <ExcelColumn label="Total Leaves" value="total"/>
-                    <ExcelColumn label="Remaining Leaves" value="remaining"/>
-                </ExcelSheet>
-            </ExcelFile>
-        );
-    }
-}
+        <ExcelExport data={data} group={group} fileName="Products.xlsx" ref={_exporter}>
+          <ExcelExportColumn field="ProductID" title="Product ID" locked={true} width={200} />
+          <ExcelExportColumn field="ProductName" title="Product Name" width={350} />
+          <ExcelExportColumnGroup title="Availability" headerCellOptions={{
+        textAlign: 'center'
+      }}>
+            <ExcelExportColumn field="UnitPrice" title="Price" cellOptions={{
+          format: '$#,##0.00'
+        }} width={150} footerCellOptions={{
+          wrap: true,
+          textAlign: 'center'
+        }} groupFooterCellOptions={{
+          textAlign: 'right'
+        }} groupFooter={CustomGroupFooter} footer={CustomFooter} />
+            <ExcelExportColumn field="UnitsOnOrder" title="Units on Order" />
+            <ExcelExportColumn field="UnitsInStock" title="Units in Stock" />
+          </ExcelExportColumnGroup>
+          <ExcelExportColumn field="Discontinued" title="Discontinued" hidden={true} groupHeader={CustomGroupHeader} />
+        </ExcelExport>
+      </div>;
+};
+
+ReactDOM.render(<App />, document.querySelector('my-app'));

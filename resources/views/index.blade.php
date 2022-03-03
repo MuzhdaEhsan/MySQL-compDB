@@ -18,6 +18,9 @@
                         aria-label="Search input with dropdown list" placeholder="Search for code, name or statement" />
                 </div>
             </div>
+            <a href="/excel" class="btn btn-primary btn-sm rounded-pill">
+                <i class="fa fa-plus"></i> Print
+            </a>
         </div>
 
         <div class="row justify-content-center">

@@ -68,7 +68,7 @@
                                         <ul class="list-inline m-0">
                                             <li class="list-inline-item">
                                                 <a href="/logs/{{ $log->id }}"
-                                                    class="btn btn-primary btn-sm rounded-pill">
+                                                    class="btn btn-secondary btn-sm rounded-pill">
                                                     <i class="fa fa-eye"></i> View
                                                 </a>
                                             </li>

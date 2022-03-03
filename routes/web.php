@@ -12,6 +12,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
+use App\http\Controllers\ExcelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('skills', SkillController::class);
     Route::resource('knowledge', KnowledgeController::class);
     Route::resource('courses', CourseController::class);
+    Route::resource('excel', ExcelController::class);
 
     // Use this custom prefix route instead of placing them in api.php is because
     // we are using session-based authentication while api.php is for stateless requests

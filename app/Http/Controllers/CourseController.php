@@ -49,7 +49,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'course_code' => ['regex:/^[a-zA-Z]/', 'required'],
+            'course_code' => ['regex:/^[a-zA-Z]/', 'unique:courses,code', 'required'],
             'course_full_name' => ['string', 'required'],
         ]);
 

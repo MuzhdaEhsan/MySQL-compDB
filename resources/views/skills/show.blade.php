@@ -7,6 +7,9 @@
                 <div class="d-flex justify-content-between pt-2">
                     <p class="fs-3">{{ $skill->code }} - {{ $skill->short_name }}</p>
                     <div>
+                        <a href="/skills" class="btn btn-secondary btn-sm rounded-pill">
+                            <i class="fa fa-list"></i> Back To List
+                        </a>
                         <a href="/skills/{{ $skill->id }}/edit" class="btn btn-success btn-sm rounded-pill">
                             <i class="fa fa-edit"></i> Edit
                         </a>

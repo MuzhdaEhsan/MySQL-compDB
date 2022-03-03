@@ -11,6 +11,10 @@ const ChangePasswordView = () => {
     // States
     // Helper methods
 
+    const cancelForm = (event) => {
+        event.preventDefault();
+        history.back();
+    };
     const submitForm = (event) => {
         event.preventDefault();
 
@@ -25,13 +29,25 @@ const ChangePasswordView = () => {
             
             {/* Submit button  */}
             <div className="d-flex justify-content-center">
-                <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={submitForm}
-                >
-                    Update Password
-                </button>
+                
+                <div className="col-2">
+                    <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={submitForm}
+                    >
+                        Change Password
+                    </button>
+                </div>
+                <div className="col-2">
+                    <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={cancelForm}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </div>
         </div>
     );
