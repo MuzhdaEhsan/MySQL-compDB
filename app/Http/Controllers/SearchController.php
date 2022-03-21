@@ -14,26 +14,33 @@ class SearchController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function __invoke(Request $request)
-    {
+    {  
+        
         if (strlen($request->input('keyword')) === 0) {
             return response()->json('Missing keyword param.', 422);
         } else if (!$request->input('type')) {
             return response()->json('Missing type param.', 422);
         }
 
-        $keywords = explode(' ', $request->input('keyword'));
-        $toTsquery = "";
+        $keywords =  $request->input('keyword');
+
+        //$keywords = explode(' ', $request->input('keyword'));
+        //$toTsquery = "";
+
+        //console.log($keywords); 
+
+        //print(explode(' ', $request->input('keyword'))); exit;
 
         // Manually extract tokens from search query instead of using plainto_tsquery
         // because it will remove words like the, a, an, etc.
         // e.g. Problem sol will be converted into "Problem:* & Sol:*"
         // The :* will match anything after that and the & means the result must contain all tokens
-        foreach ($keywords as $key => $value) {
+        /*foreach ($keywords as $key => $value) {
             $toTsquery .= $value . ':*';
             if ($key < count($keywords) - 1) {
                 $toTsquery .= ' & ';
             }
-        }
+        }*/
 
         $table = "";
         $column = "";
@@ -70,13 +77,19 @@ class SearchController extends Controller
         // Check if the request contain result limit
         $limit = $request->input('limit') ?? null;
 
-        $results = DB::select(
+        /*$results = DB::select(
             "SELECT {$fields} FROM {$table} WHERE {$column} @@ to_tsquery('simple', ?)" . ($limit ? " LIMIT $limit;" : ";"),
             [$toTsquery]
+        );*/
+
+        $results = DB::select(
+            "SELECT {$fields} FROM {$table} WHERE MATCH({$column}) AGAINST('{$keywords}*' IN BOOLEAN MODE);"
         );
 
+        
+       
         // Add highlighted text to each result
-        foreach ($results as $result) {
+        /*foreach ($results as $result) {
             if ($request->input('type') === 'courses') {
                 $result->highlight = DB::select(
                     "SELECT ts_headline('simple', ?, to_tsquery('simple', ?),
@@ -90,10 +103,17 @@ class SearchController extends Controller
                     ["{$result->code} - {$result->short_name} <br /> {$result->statement}", $toTsquery]
                 )[0]->ts_headline;
             }
-        }
+        }*/
+
 
         return response()->json([
             'data' => $results
         ]);
+    }
+
+    // Highlight words in text
+    public function highlightWords($text, $word){
+        $text = preg_replace('#'. preg_quote($word) .'#i', '\\0', $text);
+        return $text;
     }
 }

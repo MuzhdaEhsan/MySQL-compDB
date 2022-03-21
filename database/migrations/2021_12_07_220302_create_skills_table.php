@@ -26,13 +26,26 @@ class CreateSkillsTable extends Migration
         Schema::table('skills', function (Blueprint $table) {
             DB::statement("
             ALTER TABLE skills
+            ADD COLUMN skills_index_col varchar(250) GENERATED ALWAYS AS (concat(short_name,' ',statement)) STORED;
+            
+            ");
+            DB::statement("
+            CREATE INDEX skills_idx ON skills (skills_index_col);
+            ");
+        });
+
+        DB::statement('ALTER TABLE `skills` ADD FULLTEXT (skills_index_col)');
+
+        /*Schema::table('skills', function (Blueprint $table) {
+            DB::statement("
+            ALTER TABLE skills
                 ADD COLUMN skills_index_col tsvector
                 GENERATED ALWAYS AS (to_tsvector('simple', coalesce(code, '') || ' ' || coalesce(short_name, '') || ' ' || coalesce(statement, ''))) STORED;
             ");
             DB::statement("
             CREATE INDEX skills_idx ON skills USING GIN (skills_index_col);
             ");
-        });
+        });*/
     }
 
     /**

@@ -158,7 +158,7 @@ const CourseAccordion = ({
                                               {/* Highlighted search result from API */}
                                               <p
                                                   dangerouslySetInnerHTML={{
-                                                      __html: course.highlight,
+                                                      __html: course.code + " - " + course.full_name,
                                                   }}
                                               ></p>
                                           </div>

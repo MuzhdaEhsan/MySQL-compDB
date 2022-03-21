@@ -26,13 +26,26 @@ class CreateAttributesTable extends Migration
         Schema::table('attributes', function (Blueprint $table) {
             DB::statement("
             ALTER TABLE attributes
+            ADD COLUMN attributes_index_col varchar(250) GENERATED ALWAYS AS (concat(short_name,' ',statement)) STORED;
+            
+            ");
+            DB::statement("
+            CREATE INDEX attributes_idx ON attributes (attributes_index_col);
+            ");
+        });
+
+        DB::statement('ALTER TABLE `attributes` ADD FULLTEXT (attributes_index_col)');
+
+        /*Schema::table('attributes', function (Blueprint $table) {
+            DB::statement("
+            ALTER TABLE attributes
                 ADD COLUMN attributes_index_col tsvector
                 GENERATED ALWAYS AS (to_tsvector('simple', coalesce(code, '') || ' ' || coalesce(short_name, '') || ' ' || coalesce(statement, ''))) STORED;
             ");
             DB::statement("
             CREATE INDEX attributes_idx ON attributes USING GIN (attributes_index_col);
             ");
-        });
+        });*/
     }
 
     /**

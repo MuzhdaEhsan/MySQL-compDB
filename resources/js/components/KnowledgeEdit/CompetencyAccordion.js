@@ -143,7 +143,7 @@ const CompetencyAccordion = ({
                                               {/* Highlighted search result from API */}
                                               <p
                                                   dangerouslySetInnerHTML={{
-                                                      __html: competency.highlight,
+                                                      __html: competency.code + " - " + competency.short_name + "<br />" + competency.statement,
                                                   }}
                                               ></p>
                                           </div>

@@ -159,7 +159,7 @@ const SkillAccordion = ({
                                               {/* Highlighted search result from API */}
                                               <p
                                                   dangerouslySetInnerHTML={{
-                                                      __html: skill.highlight,
+                                                      __html: skill.code + " - " + skill.short_name + "<br />" + skill.statement,
                                                   }}
                                               ></p>
                                           </div>

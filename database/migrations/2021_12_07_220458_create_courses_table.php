@@ -25,13 +25,26 @@ class CreateCoursesTable extends Migration
         Schema::table('courses', function (Blueprint $table) {
             DB::statement("
             ALTER TABLE courses
+            ADD COLUMN courses_index_col varchar(250) GENERATED ALWAYS AS (full_name) STORED;
+            
+            ");
+            DB::statement("
+            CREATE INDEX courses_idx ON courses (courses_index_col);
+            ");
+        });
+
+        DB::statement('ALTER TABLE `courses` ADD FULLTEXT (courses_index_col)');
+
+        /*Schema::table('courses', function (Blueprint $table) {
+            DB::statement("
+            ALTER TABLE courses
                 ADD COLUMN courses_index_col tsvector
                            GENERATED ALWAYS AS (to_tsvector('simple', coalesce(code, '') || ' ' || coalesce(full_name, ''))) STORED;
             ");
             DB::statement("
             CREATE INDEX courses_idx ON courses USING GIN (courses_index_col);
             ");
-        });
+        });*/
     }
 
     /**

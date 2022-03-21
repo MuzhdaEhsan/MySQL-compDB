@@ -159,7 +159,7 @@ const AttributeAccordion = ({
                                               {/* Highlighted search result from API */}
                                               <p
                                                   dangerouslySetInnerHTML={{
-                                                      __html: attribute.highlight,
+                                                      __html: attribute.code + " - " + attribute.short_name + "<br />" + attribute.statement,
                                                   }}
                                               ></p>
                                           </div>

@@ -18,9 +18,7 @@
                         aria-label="Search input with dropdown list" placeholder="Search for code, name or statement" />
                 </div>
             </div>
-            <a href="/excel" class="btn btn-primary btn-sm rounded-pill">
-                <i class="fa fa-plus"></i> Print
-            </a>
+            
         </div>
 
         <div class="row justify-content-center">
@@ -36,11 +34,14 @@
             // Get HTML Elements.
             const inputElement = document.querySelector('#search-input');
             const selectElement = document.querySelector('#search-type');
+            
+            //console.log(keySearched);
 
             const search = async (keyword, type) => {
                 const resultContainerElement = document.querySelector('#result-container');
-
+                
                 if (keyword.length > 0) {
+
                     const {
                         data
                     } = await axios.get("/stateful-api/search", {
@@ -49,14 +50,23 @@
                             keyword
                         },
                     });
-
+                    
+                    //console.log(data);
                     if (data?.data?.length > 0) {
                         let listGroupDiv = document.createElement('div');
                         listGroupDiv.classList.add('list-group');
 
                         data?.data.forEach(item => {
-                            listGroupDiv.innerHTML +=
-                                `<a href="/${type}/${item.id}" class="list-group-item list-group-item-action">${item.highlight}</a>`
+                            
+                            if(type == 'courses')
+                            {   
+                                listGroupDiv.innerHTML += 
+                                `<a href="/${type}/${item.id}" class="list-group-item list-group-item-action">${item.code} - ${item.full_name}</a>`
+                            }
+                            else{
+                                listGroupDiv.innerHTML +=
+                                `<a href="/${type}/${item.id}" class="list-group-item list-group-item-action">${item.code} - ${item.short_name} - ${item.statement}</a>`
+                            }
                         });
 
                         resultContainerElement.innerHTML = "";

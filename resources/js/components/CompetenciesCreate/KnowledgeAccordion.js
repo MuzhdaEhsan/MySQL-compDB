@@ -30,7 +30,7 @@ const KnowledgeAccordion = ({
             const { data } = await axios.get("/stateful-api/search", {
                 params: {
                     keyword,
-                    type: "aKnowledge",
+                    type: "knowledge",
                     limit: ITEMS_PER_PAGE,
                 },
             });
@@ -159,7 +159,7 @@ const KnowledgeAccordion = ({
                                               {/* Highlighted search result from API */}
                                               <p
                                                   dangerouslySetInnerHTML={{
-                                                      __html: knowledge.highlight,
+                                                      __html: knowledge.code + " - " + knowledge.short_name + "<br />" + knowledge.statement,
                                                   }}
                                               ></p>
                                           </div>
